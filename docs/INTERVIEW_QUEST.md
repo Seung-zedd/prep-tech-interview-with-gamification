@@ -83,3 +83,7 @@ _출처: VSFe/Tech-Interview (Advanced Logic)_
   - **A:** 속도가 중요한 조회 작업엔 UDP(53포트)가 기본이나, 응답 데이터가 512바이트를 넘거나 Zone Transfer 시에는 신뢰성을 위해 TCP를 사용함.
 - **Q2: "웹 페이지를 렌더링할 때 브라우저는 왜 HTML과 CSS를 별도로 파싱하며, 이 과정이 성능에 미치는 영향은?"**
   - **A:** HTML은 DOM, CSS는 CSSOM을 형성하며 둘이 합쳐져 Render Tree가 됨. CSS는 렌더링 차단 리소스(Rendering Blocking)이므로 최적화가 필수적임.
+- **Q3: "통신 과정에서 데이터가 계층을 내려가며 변하는 명칭(PDU)과 그 과정(Encapsulation)을 설명하시오."**
+  - **A:** L7(Data) → L4(Segment) → L3(Packet) → L2(Frame) → L1(Bits)로 캡슐화됨. 각 계층의 헤더가 붙으며 하위 계층으로 전달되는 이 과정은 복잡한 통신을 모듈화하여 관리하기 위함임.
+- **Q4: "접속 지연이 발생할 때, 계층별로 의심할 수 있는 병목 포인트는?"**
+  - **A:** DNS 지연 (첫 패킷 도달 전), TCP 패킷 손실 (재전송으로 인한 Throughput 급감), L7 오버헤드 (HTTPS 암호화 연산 및 무거운 헤더) 등을 차례로 분석해야 함.
