@@ -1,0 +1,74 @@
+# 📜 기술 면접 병법서 (Interview Quest Log)
+
+기술 면접의 전장에서 논리의 칼날을 갈고, 지식을 병법으로 정제하는 성전입니다.  
+모든 답변은 **[질문 - 용사의 답변 - 부관의 피드백 - 최종 오의]**의 형식을 따릅니다.
+
+---
+
+## 🌐 Network
+
+- [ ] HTTP/HTTPS의 차이
+- [ ] TCP와 UDP의 차이 (3-way/4-way handshake)
+- [ ] REST API의 특징
+- [x] **웹 통신의 큰 흐름 (Google 접속 시나리오)** 🏆
+
+## 💻 Operating System
+
+- [ ] 프로세스와 스레드의 차이
+- [ ] 멀티 프로세스와 멀티 스레드
+- [ ] 데드락(Deadlock)의 발생 조건과 해결책
+- [ ] 가상 메모리와 페이징/세그멘테이션
+
+## 🗄️ Database
+
+- [ ] RDBMS vs NoSQL
+- [ ] 트랜잭션의 ACID 성질
+- [ ] 인덱스(Index)의 원리와 자료구조 (B-Tree)
+- [ ] 데이터베이스 정규화(Normalization)
+
+## ☕ Java
+
+- [ ] JVM의 구조와 가비지 컬렉션(GC)
+- [ ] 자바의 메모리 영역 (Stack vs Heap)
+- [ ] 인터페이스와 추상 클래스의 차이
+- [ ] Generic의 개념과 필요성
+
+## 🍃 Spring
+
+- [ ] IoC(Inversion of Control)와 DI(Dependency Injection)
+- [ ] Spring Bean의 생명주기
+- [ ] AOP(Aspect Oriented Programming)의 개념
+- [ ] Spring MVC 구조와 동작 원리
+
+---
+
+## ⚔️ 승전 기록 (Quest Archives)
+
+### 퀘스트 01: 웹 통신의 큰 흐름 (Google 접속 시나리오)
+
+- **날짜:** 2026-03-02
+- **랭크:** **A-Rank** (핵심 흐름은 파악했으나 디테일 보정 필요)
+
+#### ❓ 질문 (Question)
+
+"브라우저 주소창에 www.google.com을 입력했을 때 발생하는 전체 과정을 설명하시오."
+
+#### 🛡️ 용사의 답변 (Initial Answer)
+
+"주소를 입력하면 DNS 서버에 가서 IP를 받아옵니다. 그 후 TCP 연결을 맺고 HTTP 요청을 보냅니다. 서버는 응답을 주고 브라우저는 화면을 그립니다."
+
+#### 📋 부관의 피드백 (Feedback)
+
+1. **DNS Lookup의 선행성:** 단순히 '가서 받아온다'기보다, 브라우저 캐시 -> OS 캐시 -> Router 캐시 -> ISP DNS 순서로 조회하는 **계층적 탐색**임을 명시하면 논리가 더 날카로워집니다.
+2. **200 OK의 의미:** 서버가 응답을 줄 때의 상태 코드, 특히 성공을 의미하는 **200 OK**와 헤더/바디의 구분을 언급해야 합니다.
+3. **계층별 헤더 구분:** 전송 시 각 계층(L7~L1)을 거치며 **헤더가 캡슐화**되는 과정을 언급하면 'Network 계층 모델'에 대한 깊은 이해를 증명할 수 있습니다.
+
+#### 🔱 최종 오의 (Final Secret Art)
+
+> **"웹 통신은 '탐색'으로 시작하여 '캡슐화'로 이동하고 '렌더링'으로 결실을 맺는다."**
+>
+> 1. **DNS 탐색:** 브라우저는 우선 자신의 캐시와 OS 호스트 파일을 확인한 후, 계층적 DNS 서버(Recursive/Root/TLD/Authoritative)를 통해 IP 주소를 획득한다.
+> 2. **TCP 연합:** 획득한 IP의 80/443 포트로 **TCP 3-Way Handshake**를 수행하여 신뢰성 있는 연결 통로를 확보한다. (HTTPS의 경우 SSL/TLS Handshake 추가)
+> 3. **HTTP 요청 & 소포(Capsule):** L7(HTTP 요청)이 생성되면 하위 계층을 내려가며 TCP 헤더, IP 헤더, Ethernet 프레임이 **캡슐화**되어 전송된다.
+> 4. **서버 응답:** 구글 서버는 요청을 해석하여 **200 OK** 상태 코드와 함께 HTML 데이터를 담은 응답 소포를 보낸다.
+> 5. **최종 렌더링:** 브라우저는 받은 데이터(HTML, CSS, JS)를 파싱하여 DOM/CSSOM 트리를 구축하고 화면에 그려낸다.
