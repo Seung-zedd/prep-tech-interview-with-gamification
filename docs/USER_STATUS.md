@@ -11,6 +11,8 @@
 - **누적 XP:** 50 / 600
 - **특수 스킬:**
   - `계층적 탐색의 눈` (Hierarchical DNS Lookup: 브라우저 캐시부터 Authoritative DNS까지 꿰뚫어 봄)
+  - `인덱스의 지배자` (Index Dominator: Row, Col 및 변칙적 인덱스를 자유자재로 조종)
+  - `사고의 혜안` (Thought Chain Vision: 자신의 논리가 진화하는 궤적을 스스로 관찰)
   - `프로토콜 연합` (Protocol Alliance: TCP/UDP의 성질을 자유자재로 다룸)
   - `영속성의 통찰` (Persistence Insight: **표 편집(Table Edit)** 문제를 통해 JPA 영속성 컨텍스트의 핵심(detach/merge)을 이미 깨우침)
   - `메모리의 사슬` (Memory Chain: **표 편집(Table Edit)**의 인덱스 기반 연결 리스트를 운영체제의 Linked List로 치환)
