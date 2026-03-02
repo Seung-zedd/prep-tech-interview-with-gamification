@@ -72,3 +72,14 @@
 > 3. **HTTP 요청 & 소포(Capsule):** L7(HTTP 요청)이 생성되면 하위 계층을 내려가며 TCP 헤더, IP 헤더, Ethernet 프레임이 **캡슐화**되어 전송된다.
 > 4. **서버 응답:** 구글 서버는 요청을 해석하여 **200 OK** 상태 코드와 함께 HTML 데이터를 담은 응답 소포를 보낸다.
 > 5. **최종 렌더링:** 브라우저는 받은 데이터(HTML, CSS, JS)를 파싱하여 DOM/CSSOM 트리를 구축하고 화면에 그려낸다.
+
+---
+
+#### 🎯 심화 꼬리 질문 대비 (Follow-up Defense)
+
+_출처: VSFe/Tech-Interview (Advanced Logic)_
+
+- **Q1: "DNS Lookup이 UDP를 사용하는 이유와 TCP를 사용해야 하는 예외 상황은?"**
+  - **A:** 속도가 중요한 조회 작업엔 UDP(53포트)가 기본이나, 응답 데이터가 512바이트를 넘거나 Zone Transfer 시에는 신뢰성을 위해 TCP를 사용함.
+- **Q2: "웹 페이지를 렌더링할 때 브라우저는 왜 HTML과 CSS를 별도로 파싱하며, 이 과정이 성능에 미치는 영향은?"**
+  - **A:** HTML은 DOM, CSS는 CSSOM을 형성하며 둘이 합쳐져 Render Tree가 됨. CSS는 렌더링 차단 리소스(Rendering Blocking)이므로 최적화가 필수적임.
