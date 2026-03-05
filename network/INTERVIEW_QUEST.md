@@ -1,44 +1,15 @@
-# 📜 기술 면접 병법서 (Interview Quest Log)
-
-기술 면접의 전장에서 논리의 칼날을 갈고, 지식을 병법으로 정제하는 성전입니다.  
-모든 답변은 **[질문 - 용사의 답변 - 부관의 피드백 - 최종 오의]**의 형식을 따릅니다.
+# 📜 기술 면접 병법서: Network (Interview Quest Log)
 
 ---
 
-## 🌐 Network
+## 🌐 Network Checklist
 
+- [ ] OSI 7 계층 (물리, 네트워크, 전송, 응용 중심)
+- [ ] TCP 3-way & 4-way handshake
+- [ ] DNS (Domain Name System) 계층적 구조
 - [ ] HTTP/HTTPS의 차이
-- [ ] TCP와 UDP의 차이 (3-way/4-way handshake)
 - [ ] REST API의 특징
 - [x] **웹 통신의 큰 흐름 (Google 접속 시나리오)** 🏆
-
-## 💻 Operating System
-
-- [ ] 프로세스와 스레드의 차이
-- [ ] 멀티 프로세스와 멀티 스레드
-- [ ] 데드락(Deadlock)의 발생 조건과 해결책
-- [ ] 가상 메모리와 페이징/세그멘테이션
-
-## 🗄️ Database
-
-- [ ] RDBMS vs NoSQL
-- [ ] 트랜잭션의 ACID 성질
-- [ ] 인덱스(Index)의 원리와 자료구조 (B-Tree)
-- [ ] 데이터베이스 정규화(Normalization)
-
-## ☕ Java
-
-- [ ] JVM의 구조와 가비지 컬렉션(GC)
-- [ ] 자바의 메모리 영역 (Stack vs Heap)
-- [ ] 인터페이스와 추상 클래스의 차이
-- [ ] Generic의 개념과 필요성
-
-## 🍃 Spring
-
-- [ ] IoC(Inversion of Control)와 DI(Dependency Injection)
-- [ ] Spring Bean의 생명주기
-- [ ] AOP(Aspect Oriented Programming)의 개념
-- [ ] Spring MVC 구조와 동작 원리
 
 ---
 
