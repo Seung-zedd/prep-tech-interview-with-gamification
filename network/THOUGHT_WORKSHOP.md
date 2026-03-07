@@ -76,7 +76,52 @@
 
 #### 💎 5단계: 진화된 사고 (Evolution)
 
-- DNS는 단순한 '전화번호부'가 아니라, 전 세계의 트래픽을 효율적으로 처리하기 위해 **거대한 계층 구조로 설계된 분산형 데이터베이스 시스템**이다.
+- DNS는 단순한 '전화번호부'가 아니라, 전 세계의 트래픽을 효율적으로 처리하기 위해 **거대한 계층 구조로 설계된 분산형 데이터베이스 시스템**이다. 특히 **Iterative Query**와 **Caching**의 조화는 상위 계층 서버의 부하를 최소화하면서도 빠른 응답을 가능케 하는 분산 시스템의 정수다.
+
+---
+
+### 퀘스트 04: DNS의 심화 메커니즘 - "질의 방식과 레코드의 철학"
+
+#### 🛡️ 1단계: 초기 인식 (Intuition)
+
+- "물어보는 방법에도 여러 가지가 있다? 재귀(Recursive)는 내가 다 해주는 것, 반복(Iterative)은 알려만 주는 것."
+- "레코드는 전화번호부의 한 줄 한 줄을 구성하는 데이터 양식."
+
+#### 🏗️ 2단계: 논리 조립 (Architecture)
+
+- **질의 방식의 차이 (Iterative vs Recursive):**
+  - **Recursive:** Root 서버가 최종 IP까지 직접 알아다 줌 ($O(N)$의 깊이만큼 상위 서버에 부하 집중 ➡️ 거의 사용 안 함).
+  - **Iterative:** Root는 다음 갈 곳(TLD)만 알려주고, 발품은 Local DNS가 파는 구조 (상위 서버의 부하 분산 ➡️ 인터넷의 표준).
+  - **Bridge:** 이 구조는 하드웨어의 **Memory Hierarchy (L1, L2 Cache)** 및 **JPA의 1차 캐시** 철학(가까운 곳에서 해결, 멀리 가기 최소화)과 맞닿아 있음.
+- **레코드 타입의 전술:**
+  - **Type A:** 호스트네임 ➡️ IP 주소 매핑 (실제 좌표).
+  - **Type NS:** 도메인 ➡️ Authoritative 네임 서버 명칭 (사령부 안내).
+  - **Type CNAME:** 별명 ➡️ 진짜 이름 (관리의 용이성).
+  - **Type MX:** 메일 서버 정보 (특수 목적 트래픽 관리).
+- **DNS Registrar (등록):** 새로운 도메인 등록 시 TLD에 **NS 레코드**와 **A 레코드(Glue Record)**를 쌍으로 넣어 순환 참조(Circular Reference)를 방지함.
+
+#### 🎙️ 3단계: 실전 발화 (Verbatim Execution)
+
+- (자정이 넘은 시각, 용사의 뇌를 보호하기 위해 내일의 사자후를 기약하며 논리 설계로 대체합니다.)
+
+#### ⚡ 4단계: 사고의 균열 & 교정 (Reflection)
+
+- **균열:** TLD가 최종 IP를 안다고 착각함.
+- **교정:** TLD는 최종 목적지가 아닌 **'다음 사령부(Authoritative)의 이름(NS)과 주소(A)'**를 알려주는 표지판 역할을 수행함을 명시 (Glue Record).
+
+#### 💎 5단계: 진화된 사고 (Evolution)
+
+- **[2026-03-08]**: "DNS는 단순한 전송을 넘어, **'권한의 위임(Delegation)'**과 **'부하의 분산'**을 통해 수십억 개의 엔티티를 관리하는 장엄한 공학적 설계물이다."
+
+#### 🖼️ 사고의 시각화 (Military Analogy Diagram)
+
+```carousel
+![Iterative Query Strategy](../assets/images/network/dns_note_iterative.png)
+<!-- slide -->
+![Recursive Query Burden](../assets/images/network/dns_note_recursive.png)
+<!-- slide -->
+![DNS Registrar & Record Logic](../assets/images/network/dns_note_registrar.png)
+```
 
 ---
 
@@ -118,7 +163,7 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 
 ### 🖼️ 사고의 시각화 (Military Analogy Diagram)
 
-![OSI 7-Layer Military Analogy](../assets/images/osi_7_layer_military_analogy_1772715003989.png)
+![OSI 7-Layer Military Analogy](../assets/images/network/osi_7_layer_military_analogy_1772715003989.png)
 
 ### 🧩 파란 펜의 해답 (Blue Pen Clearance)
 
@@ -153,4 +198,4 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 - **핵심 지도:** `SYN` ➡️ `SYN/ACK` ➡️ `ACK` (3-Way) / `FIN` ➡️ `ACK` ➡️ `FIN` ➡️ `ACK` (4-Way)
 - **관전 포인트:** "데이터를 던지기 전, 서로의 '준비 상태'를 어떻게 확신(Acknowledge)하는가?"
 
-![DNS & TCP Handshake Guide](../assets/images/dns_hierarchy_and_tcp_handshake_combined_1772859814751.png)
+![DNS & TCP Handshake Guide](../assets/images/network/dns_hierarchy_and_tcp_handshake_combined_1772859814751.png)
