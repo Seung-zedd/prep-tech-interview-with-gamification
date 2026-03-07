@@ -4,12 +4,9 @@
 
 ## 🌐 Network Checklist
 
-- [ ] OSI 7 계층 (물리, 네트워크, 전송, 응용 중심)
-- [ ] TCP 3-way & 4-way handshake
-- [ ] DNS (Domain Name System) 계층적 구조
-- [ ] HTTP/HTTPS의 차이
-- [ ] REST API의 특징
 - [x] **웹 통신의 큰 흐름 (Google 접속 시나리오)** 🏆
+- [ ] **TCP 3-way & 4-way handshake** ⚔️ _(입성 중)_
+- [ ] **DNS (Domain Name System) 계층적 구조** 🎯 _(입성 중)_
 
 ---
 
