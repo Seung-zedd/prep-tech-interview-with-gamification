@@ -115,13 +115,11 @@
 
 #### 🖼️ 사고의 시각화 (Military Analogy Diagram)
 
-```carousel
 ![Iterative Query Strategy](../assets/images/network/dns_note_iterative.png)
-<!-- slide -->
+
 ![Recursive Query Burden](../assets/images/network/dns_note_recursive.png)
-<!-- slide -->
+
 ![DNS Registrar & Record Logic](../assets/images/network/dns_note_registrar.png)
-```
 
 ---
 
