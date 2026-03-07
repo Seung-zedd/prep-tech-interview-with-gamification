@@ -115,11 +115,15 @@
 
 #### 🖼️ 사고의 시각화 (Military Analogy Diagram)
 
-![Iterative Query Strategy](../assets/images/network/dns_note_iterative.png)
+![Gate 1: Necessity of DNS & Distributed Logic](../assets/images/network/dns/dns_note_necessity.png)
 
-![Recursive Query Burden](../assets/images/network/dns_note_recursive.png)
+![Gate 2: DNS Hierarchy & Global Map](../assets/images/network/dns/dns_note_hierarchy_map.png)
 
-![DNS Registrar & Record Logic](../assets/images/network/dns_note_registrar.png)
+![Gate 3: Iterative Query Strategy](../assets/images/network/dns/dns_note_iterative.png)
+
+![Gate 3: Recursive Query Burden](../assets/images/network/dns/dns_note_recursive.png)
+
+![Gate 4: DNS Registrar & Record Logic](../assets/images/network/dns/dns_note_registrar.png)
 
 ---
 
@@ -161,7 +165,7 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 
 ### 🖼️ 사고의 시각화 (Military Analogy Diagram)
 
-![OSI 7-Layer Military Analogy](../assets/images/network/osi_7_layer_military_analogy_1772715003989.png)
+![OSI 7-Layer Military Analogy](../assets/images/network/dns/osi_7_layer_military_analogy_1772715003989_ai.png)
 
 ### 🧩 파란 펜의 해답 (Blue Pen Clearance)
 
@@ -196,4 +200,4 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 - **핵심 지도:** `SYN` ➡️ `SYN/ACK` ➡️ `ACK` (3-Way) / `FIN` ➡️ `ACK` ➡️ `FIN` ➡️ `ACK` (4-Way)
 - **관전 포인트:** "데이터를 던지기 전, 서로의 '준비 상태'를 어떻게 확신(Acknowledge)하는가?"
 
-![DNS & TCP Handshake Guide](../assets/images/network/dns_hierarchy_and_tcp_handshake_combined_1772859814751.png)
+![DNS & TCP Handshake Guide](../assets/images/network/dns/dns_hierarchy_and_tcp_handshake_combined_1772859814751_ai.png)
