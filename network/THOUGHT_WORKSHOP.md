@@ -113,6 +113,10 @@
 
 - **[2026-03-08]**: "DNS는 단순한 전송을 넘어, **'권한의 위임(Delegation)'**과 **'부하의 분산'**을 통해 수십억 개의 엔티티를 관리하는 장엄한 공학적 설계물이다."
 
+#### 🗺️ 전술적 논리 합성 (Network Logic Synthesis)
+
+![Network Synthesis Logic - Tactial Nano Banana](../assets/images/network/network_synthesis_logic_nanobanana_ai.png)
+
 #### 🖼️ 사고의 시각화 (Military Analogy Diagram)
 
 ![Gate 1: Necessity of DNS & Distributed Logic](../assets/images/network/dns/dns_note_necessity.png)
@@ -197,11 +201,7 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 
 ### 퀘스트 04: TCP 3-Way & 4-Way Handshake - "신뢰의 다리 놓기"
 
-#### �️ 전술적 논리 합성 (Network Logic Synthesis)
-
-![Network Synthesis Logic - Tactial Nano Banana](../assets/images/network/network_synthesis_logic_nanobanana_ai.png)
-
-#### �🛡️ 1단계: 초기 인식 (Intuition)
+#### 🛡️ 1단계: 초기 인식 (Intuition)
 
 - "데이터를 보내기 전에 서로 마음이 맞는지 확인하는 '예절' (3-Way)."
 - "헤어질 때도 뒷정리를 깔끔하게 하는 '품격' (4-Way)."
