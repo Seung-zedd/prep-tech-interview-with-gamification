@@ -197,7 +197,53 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 
 ### 퀘스트 04: TCP 3-Way & 4-Way Handshake - "신뢰의 다리 놓기"
 
-- **핵심 지도:** `SYN` ➡️ `SYN/ACK` ➡️ `ACK` (3-Way) / `FIN` ➡️ `ACK` ➡️ `FIN` ➡️ `ACK` (4-Way)
-- **관전 포인트:** "데이터를 던지기 전, 서로의 '준비 상태'를 어떻게 확신(Acknowledge)하는가?"
+#### �️ 전술적 논리 합성 (Network Logic Synthesis)
 
-![DNS & TCP Handshake Guide](../assets/images/network/dns/dns_hierarchy_and_tcp_handshake_combined_1772859814751_ai.png)
+![Network Synthesis Logic - Tactial Nano Banana](../assets/images/network/network_synthesis_logic_nanobanana_ai.png)
+
+#### �🛡️ 1단계: 초기 인식 (Intuition)
+
+- "데이터를 보내기 전에 서로 마음이 맞는지 확인하는 '예절' (3-Way)."
+- "헤어질 때도 뒷정리를 깔끔하게 하는 '품격' (4-Way)."
+- "왜 바로 안 보내고 복잡하게 구나? -> '신뢰'가 생명인 TCP니까."
+
+#### 🏗️ 2단계: 논리 조립 (Architecture)
+
+- **3-Way (연결):**
+  - `SYN` ➡️ `SYN/ACK` ➡️ `ACK` 의 3단계.
+  - 양방향 송수신 가능 여부를 최종 확인하는 '결혼식' 같은 절차.
+- **4-Way (종료):**
+  - `FIN` ➡️ `ACK` ➡️ `FIN` ➡️ `ACK` 의 4단계.
+  - 한쪽이 끝났다고 해도 반대쪽의 데이터가 남았을 수 있음을 배려하는 '매너'.
+  - **TIME_WAIT:** 마지막 보낸 ACK가 유실될 경우를 대비한 '자비로운 기다림'.
+
+#### 🎙️ 3단계: 실전 발화 (Verbatim Execution)
+
+- (도서관 내부 수련 중으로 텍스트 설계로 대체)
+- "TCP는 신뢰성을 보장해야 합니다. 그래서 데이터를 던지기 전에 3-Way Handshake로 서로 연결이 가능한지 확인하고, 끝나면 4-Way로 우아하게 종료합니다. 특히 종료할 때 `TIME_WAIT` 상태가 있어서 혹시 모를 패킷 유실이나 중복 패킷 문제를 방지하는 게 핵심입니다."
+
+#### ⚡ 4단계: 사고의 균열 & 교정 (Reflection)
+
+- **균열 1:** "DNS 서버에 도착하면 바로 3-Way로 연결하는 건가?" (전술적 선후 관계 혼동)
+- **교정:**
+  1. **DNS(UDP):** 우선 연락처(IP)만 빨리 따옵니다. DNS 질의는 보통 **UDP**를 사용하므로, 3-Way Handshake라는 복잡한 절차 없이 질문-답변의 단발성 통신으로 끝납니다.
+  2. **Glue Record의 활약:** TLD 서버가 "그 주소는 ns1.google.com이 알아(NS)"라고 알려줄 때, 그 서버의 주소인 "ns1.google.com은 1.2.3.4야(A)"라고 함께 던지는 것이 **Glue Record**입니다. 이 덕분에 로컬 DNS는 막힘없이 최종 목적지(Authoritative Server)까지 도달합니다.
+  3. **TCP(3-Way):** 드디어 최종 IP(구글 서버)를 손에 넣은 뒤, **구글 웹 서버**로 달려가서 성문을 열어달라고(3-Way) 요청합니다.
+  4. **HTTP(Message):** 성문이 열리면(ESTABLISHED) 그제서야 준비한 캡슐(GET 메시지)을 전송합니다.
+
+#### 💎 5단계: 진화된 사고 (Evolution)
+
+- **[2026-03-08]**: "DNS는 IP를 찾기 위한 '첩보전'이고, Glue Record는 그 첩보전이 순환 참조의 늪에 빠지지 않게 해주는 '표지판'이다. 모든 첩보 활동(DNS)이 끝나고 진짜 좌표가 확보된 **그 찰나에** 비로소 본대(TCP)가 출격하여 신뢰의 다리(3-Way Handshake)를 놓는다." (S-Rank 달성)
+
+---
+
+## 🏆 사고의 임계점 (Thresholds)
+
+_이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합니다._
+
+- **[2026-03-02]**: "네트워킹은 연결이 아니라 **약속(Protocol)의 캡슐화**다."라는 통찰을 얻음.
+- **[2026-03-08]**: "DNS는 IP를 찾는 '정찰병'이고, TCP Handshake는 본대가 진격할 '보급로'를 확보하는 작업이다." (용사의 직관과 부관의 교정 합치)
+
+---
+
+## 🎨 브레인스토밍 & 액티브 트레이싱 (Active Tracing)
