@@ -263,3 +263,38 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 ---
 
 ## 🎨 브레인스토밍 & 액티브 트레이싱 (Active Tracing)
+
+### [2026-03-10] TCP Handshake: 용사와 왕의 서사 (Fairy Tale Analogy)
+
+용사님께서 정립하신 **'왕국 입성과 작별'**의 서사를 통해 복잡한 핸드쉐이크 상태 변화를 직관적으로 구조화했습니다.
+
+#### 🏗️ 2단계: 논리 조립 (Architecture - User Analogy)
+
+- **3-way handshake (왕국 입성):**
+  - **Step 1 (SYN):** 용사가 성문 앞에서 "왕께 칙령(X번)을 전하러 왔다!"고 외침. (기사가 전달)
+  - **Step 2 (SYN-ACK):** 왕이 "X번 칙령 확인(X+1). 어서 오라. 내 어명(Y번)도 받으라."며 답함.
+  - **Step 3 (ACK):** 용사가 "어명 확인(Y+1). 지금 들어간다!"며 입성. (연결 수립)
+- **4-way handshake (우아한 작별):**
+  - **Step 1 (FIN):** 용사가 "이제 볼일 다 봤으니 떠나겠소."라고 알림.
+  - **Step 2 (ACK):** 왕이 "알겠소. 하지만 두고 간 짐(남은 데이터)이 있으니 챙겨주겠소." (`CLOSE_WAIT`)
+  - **Step 3 (FIN):** 왕이 모든 짐을 실어 보내며 "이제 정말 끝이오. 잘 가시오."라고 최종 작별.
+  - **Step 4 (ACK):** 용사가 "짐 다 받았소. 진짜 가오!"라고 답하고 잠시 기다린 뒤 (`TIME_WAIT`) 퇴장.
+
+#### 🖼️ 사고의 시각화 (Military & Fantasy Analogy)
+
+##### 1. 용사와 왕의 TCP 서사 (Fairy Tale Logic)
+
+![TCP Handshake Fairy Tale Logic](../assets/images/network/handshake/q2_fairy_tale_logic_ai.png)
+
+##### 2. 주군의 전술 노트 (Local High-Res)
+
+![TCP 3-way Handshake Note](../assets/images/network/handshake/q2_handshake_note_3way.png)
+
+![TCP 4-way Handshake Note](../assets/images/network/handshake/q2_handshake_note_4way.png)
+
+#### 🧩 파란 펜의 해답 (Blue Pen Clearance - TCP 4-Way)
+
+- **Q: "누구한테 어떤 데이터를 보낼 수 있는 거지?" (CLOSE_WAIT 상태)**
+  - **A:** 서버(왕)가 클라이언트(용사)에게 보냅니다. 용사가 종료를 선언(FIN)했더라도, 서버 측에서 아직 전송이 완료되지 않은 **'잔여 데이터'**를 모두 털어내기 위해 존재하는 구간입니다.
+
+---
