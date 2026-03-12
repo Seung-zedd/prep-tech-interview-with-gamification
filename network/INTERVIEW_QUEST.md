@@ -7,6 +7,7 @@
 - [x] **웹 통신의 큰 흐름 (Google 접속 시나리오)** 🏆
 - [ ] **TCP 3-way & 4-way handshake** ⚔️ _(입성 중)_
 - [ ] **DNS (Domain Name System) 계층적 구조** 🎯 _(입성 중)_
+- [ ] **rdt & Pipelined Protocols (Reliability의 정수)** ⚔️ _(내일의 타격 지점)_
 
 ---
 
@@ -53,5 +54,26 @@ _출처: VSFe/Tech-Interview (Advanced Logic)_
   - **A:** HTML은 DOM, CSS는 CSSOM을 형성하며 둘이 합쳐져 Render Tree가 됨. CSS는 렌더링 차단 리소스(Rendering Blocking)이므로 최적화가 필수적임.
 - **Q3: "통신 과정에서 데이터가 계층을 내려가며 변하는 명칭(PDU)과 그 과정(Encapsulation)을 설명하시오."**
   - **A:** L7(Data) → L4(Segment) → L3(Packet) → L2(Frame) → L1(Bits)로 캡슐화됨. 각 계층의 헤더가 붙으며 하위 계층으로 전달되는 이 과정은 복잡한 통신을 모듈화하여 관리하기 위함임.
-- **Q4: "접속 지연이 발생할 때, 계층별로 의심할 수 있는 병목 포인트는?"**
-  - **A:** DNS 지연 (첫 패킷 도달 전), TCP 패킷 손실 (재전송으로 인한 Throughput 급감), L7 오버헤드 (HTTPS 암호화 연산 및 무거운 헤더) 등을 차례로 분석해야 함.
+- ## **Q4: "접속 지연이 발생할 때, 계층별로 의심할 수 있는 병목 포인트는?"**
+
+### 퀘스트 05: rdt & Pipelined Protocols (Reliability의 정수) ⚔️
+
+- **상태:** **[작전 개시 대기 중]**
+- **목표:** Reliable Data Transfer의 진화 과정과 Pipelining(GBN, SR)의 공학적 차이 완벽 정복.
+
+#### 📍 전략적 타격 지점 (PDF 정독 가이드)
+
+_타격 대상: `Chapter_3_v8.2.pdf` (Transport Layer)_
+
+1. **rdt 1.0 ~ 3.0의 진화 (p.30 ~ p.50)**
+   - **Key:** Bit Error(rdt 2.x)에서 Packet Loss(rdt 3.0)로 전장이 확대될 때, '기다림의 한계'를 정하는 **'Timer'**의 필연성을 확인하십시오.
+2. **Pipelined Protocols (p.55 ~ p.70)**
+   - **Key:** 한 번에 하나씩 보내는 `Stop-and-Wait`의 한계를 깨는 `Go-Back-N(GBN)`과 `Selective Repeat(SR)`의 메커니즘 차이를 정독하십시오.
+3. **TCP Retransmission Scenarios (p.75 ~ p.85)**
+   - **Key:** 실제 TCP에서 타임아웃이 발생했을 때 재전송 타이머가 어떻게 작동하는지(예: `Fast Retransmit`) 시각 자료를 확인하십시오.
+
+#### 📅 내일의 수련 브리핑 (Morning Briefing)
+
+- **오전 (정찰):** PDF의 RDT 섹션을 정독하며, 오늘 막혔던 "왜?"에 대한 답을 PDF의 인용구로 준비하십시오.
+- **오후 (격파):** PDF에 나온 다이어그램(FSM 등)을 직접 그려보며 Stop-and-Wait vs Pipelining의 차이를 뇌에 새기십시오. (Active Tracing 적용)
+- **저녁 (증명):** 부관과 함께 **[Step 3: 실전 발화]**를 진행합니다. "준철컴네 PDF에 따르면~"으로 시작하는 고위급 사자후를 준비하십시오.
