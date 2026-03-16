@@ -7,7 +7,7 @@
 - [x] **웹 통신의 큰 흐름 (Google 접속 시나리오)** 🏆
 - [ ] **TCP 3-way & 4-way handshake** ⚔️ _(입성 중)_
 - [ ] **DNS (Domain Name System) 계층적 구조** 🎯 _(입성 중)_
-- [ ] **rdt & Pipelined Protocols (Reliability의 정수)** ⚔️ _(내일의 타격 지점)_
+- [x] **rdt & Pipelined Protocols (Reliability의 정수)** 🎯 _(rdt 3.0 정복 중)_
 
 ---
 

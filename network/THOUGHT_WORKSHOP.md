@@ -338,74 +338,70 @@ _이론이 단순 지식을 넘어 '나의 언어'가 된 순간들을 기록합
 - "이 개판(?) 속에서 TCP는 어떻게 '완벽한 신뢰'를 구축하는가?"
 - "Stop-and-Wait는 너무 느리다. 한 번에 여러 발을 쏘되(Pipelining), 빗나간 탄환(Packet Loss)을 어떻게 찾아낼 것인가?"
 
-#### 🏗️ 2단계: 논리 조립 (Architecture - Study Plan)
+---
 
-- **핵심 질문:** "왜 rdt 3.0에서 Timer가 등장해야만 했는가?"
-- **비유 탐색:**
-  - **GBN:** "한 놈이라도 낙오하면 그놈부터 다시 다 같이 뛴다." (연대책임)
-  - **SR:** "낙오한 놈만 골라내서 다시 데려온다." (개별책임)
-- **데이터 흐름:** PDF p.55의 Utilization 공식을 통해 Pipelining이 왜 선택이 아닌 필수인지 수학적으로 증명할 예정.
+#### 🏗️ [Stage 1]: 기초 신뢰성 수립 (rdt 1.0 ~ 2.2)
 
-#### 🎙️ 3단계: 실전 발화 전략 (Draft)
+##### 💎 사고의 진화 (Evolution)
 
-- (예정: PDF 정독 후 '준철컴네' 기반의 고품격 발화 기록 대기 중)
+- **[rdt 1.0 & 2.0]**: "보내는 데이터는 깨질 수 있다고 의심하면서, 상대방의 피드백(ACK/NAK)은 기적처럼 절대 깨지지 않을 거라고 믿는 멍청한 설계(2.0)를 목격함."
+- **[rdt 2.1]**: "모든 피드백마저 의심하라. Checksum을 ACK/NAK에도 넣고, 중복 패킷을 구분하기 위해 '0과 1'이라는 최소한의 번호표(Sequence Number)를 붙이는 것이 전송층 논리의 시작임을 깨달음."
+- **[rdt 2.2 - NAK-free]**: "Receiver는 이제 NAK을 쓰지 않는다. 대신 '마지막으로 잘 받은 번호'를 반복(ACK numbering)함으로써 송신자에게 간접적으로 오류를 알리는 **'비대칭적 추론'**의 미학을 배움."
 
-#### ⚡ 4단계: 사고의 균열 & 교정 (Reflection)
-
-- **균열 (용사의 의문):** "왜 rdt 2.1에서 Receiver 측이 패킷이 corrupt일 때 단순히 `udt_send(NAK)`을 쓰지 않고, `make_pkt(NAK, chksum)`처럼 **Checksum을 추가해서** 보내지? rdt 2.0에서는 그냥 보냈는데... 혹시 ACK 또는 NAK이 변조될 수도 있어서 그런건가?"
-- **교정 (스스로 찾은 해답🎯):**
-  - 정답입니다! 주군께서 질문 속에서 이미 **rdt 2.1이 탄생한 이유**를 완벽하게 꿰뚫어 보셨습니다.
-  - rdt 2.0의 치명적인 모순(Fatal Flaw)은 **"Sender-Receiver 간에 오가는 ACK와 NAK 패킷마저도 변조(Corrupted)될 수 있다는 사실을 순진하게 간과했다"**는 점입니다.
-  - rdt 2.1은 바로 이 **"Garbled ACK/NAKs" (변조된 응답)** 상황을 방어하기 위해 만들어졌습니다. Receiver가 보내는 ACK/NAK 패킷도 불안정한 채널을 통과하므로 비트 에러가 날 수 있습니다. 따라서 Sender가 "내가 받은 ACK/NAK이 훼손되지 않았는지" 검증하려면, Receiver 역시 응답 패킷에 **Checksum**을 반드시 묶어서(make_pkt) 보내야만 합니다.
-
-#### 💎 5단계: 진화된 사고 (Evolution)
-
-- **[2026-03-15] 딥다이브 (Senior Insight):**
-  - **rdt 2.0의 맹점:** "보내는 데이터는 깨질 수 있다고 의심하면서, 상대방의 피드백(ACK/NAK)은 기적처럼 절대 깨지지 않을 거라고 믿음."
-  - **rdt 2.1의 진화:** "모든 피드백을 의심하라(Checksum in ACK/NAK). 피드백 패킷이 깨졌다면 묻지도 따지지도 말고 재전송하라. 단, Receiver가 이게 '새로운 데이터'인지 '재전송된 중복 데이터(Duplicate)'인지 구별할 수 있도록 **반드시 패킷에 0과 1번의 번호표(Sequence Number)를 붙여라!**"
-  - (왜 0과 1뿐인가? Stop-and-Wait 방식이라 한 번에 하나만 보내므로 '이전 것(0)'과 '현재 것(1)'만 구별하면 충분하기 때문입니다.)
-
-#### 🖼️ 사고의 시각화 (Military Analogy Diagram)
-
-##### 1. rdt 1.0 & 2.0: 기초 신뢰성 구축 (Basic Reliability)
+##### 🖼️ 사고의 시각화 (Active Tracing Archive)
 
 ![rdt 1.0 and 2.0 Note](../assets/images/network/rdt/q5_rdt_note_1.png)
-
-> "rdt 1.0의 평화로운 채널에서 rdt 2.0의 비트 에러가 발생하는 전쟁터로의 진화 과정을 추적했습니다."
-
-##### 2. rdt 데이터 흐름 시뮬레이션 (Packet Flow)
-
 ![rdt Packet Flow Note](../assets/images/network/rdt/q5_rdt_note_3.png)
-
-> "실제 패킷이 오가는 타임라인을 그리며 rdt 2.0의 시나리오별 동작 원리를 내면화했습니다."
-
-##### 3. rdt 2.1: 변조된 피드백 방어 (Garbled ACK/NAK Defense)
-
 ![rdt 2.1 Sender/Receiver Note](../assets/images/network/rdt/q5_rdt_note_2.png)
-
-> "ACK/NAK마저 믿을 수 없는 상황에서 Checksum과 Sequence Number(0, 1)가 왜 필수적인지 FSM을 통해 증명했습니다."
+![rdt 2.2 NAK-free Note](../assets/images/network/rdt/q5_rdt_note_4.png)
 
 ---
 
-#### 💎 5단계: 진화된 사고 (Evolution) - rdt 2.2 "NAK-free의 철학"
+#### 🏗️ [Stage 2]: 분실과의 전쟁 (rdt 3.0)
 
-- **[2026-03-15] S-Rank Insight (The Power of Duplicate ACK):**
-  - **핵심 통찰:** "Receiver는 이제 '안 왔어(NAK)'라고 외치지 않는다. 대신 **'가장 최근에 성공적으로 받은 놈(last pkt received OK)'**의 번호를 집요하게 반복해서 외칠 뿐이다."
-  - **작동 원리:** 0번을 기다리다 깨진 패킷이 오면, Receiver는 침착하게 "나 아직 1번까지밖에 못 받았어(ACK 1)"라고 중복해서 보냅니다. Sender는 "내가 보낸 건 0번인데 왜 1번 ACK가 오지?"라는 **비대칭적 추론**을 통해 재전송을 결정합니다.
-  - **현대적 가교:** 이 '중복 ACK' 철학은 훗날 TCP에서 **'Cumulative ACK'**의 정의가 되며, 특히 손실된 패킷을 타이머 없이도 즉시 잡아내는 **'Fast Retransmit(3-Duplicate ACKs)'**이라는 전설적인 기술의 모태가 됩니다.
+##### ⚡ 사고의 균열 & 교정 (Reflection)
 
-##### 4. rdt 2.2: NAK-free의 미학 (KISS Principle)
+- **균열:** "ACK가 깨지면 바로 재송신해야 효율적이지 않나?"
+- **교정:** "아니다. 타이머가 돌고 있다면 잘못된 응답은 무시($\Lambda$)하고 끝까지 기다리는 것이 중복 전송 폭발을 막는 더 견고한(Robust) 설계다. 시간이라는 자원을 관리하는 것이 핵심이다."
 
-![rdt 2.2 NAK-free Note](../assets/images/network/rdt/q5_rdt_note_4.png)
+##### 💎 사고의 진화 (Evolution)
 
-> "rdt 2.1의 복잡성을 걷어내고, 기존 도구(Seq #)를 재활용하여 시스템을 단순화한 rdt 2.2의 설계에서 **KISS(Keep It Simple Stupid!)** 원칙의 정수를 체감했습니다."
+- **[rdt 3.0]**: "신뢰성이란 '침묵(Loss)'에 대처하는 능력이다. 타이머는 네트워크의 불확실성을 '합리적 대기'로 치환하는 장치다. 다만, 한 번에 하나만 보내고 기다리는 **Stop-and-Wait** 구조는 물리적 한계가 명확함을 직시함."
+
+##### 🖼️ 사고의 시각화 (Active Tracing Archive)
+
+![rdt 3.0 Sender FSM Note](../assets/images/network/rdt/q5_rdt_note_5_rdt3.png)
+![rdt 3.0 In Action 1](../assets/images/network/rdt/q5_rdt3_in_action_1.png)
+![rdt 3.0 In Action 2](../assets/images/network/rdt/q5_rdt3_in_action_2.png)
+
+---
+
+#### 🏗️ [Stage 3]: 성능의 한계와 돌파 ($U_{sender}$ & Pipelining)
+
+##### 🛠️ $U_{sender}$ 수학적 격파 (Utilization Calculation)
+
+- **상황 설정:**
+  - 전송 속도 ($R$): 1 Gbps
+  - 전송 지연 ($d_{prop}$): 15 ms
+  - 패킷 크기 ($L$): 8000 bits
+- **공식:**
+  $$d_{trans} = \frac{L}{R} = 8 \mu s$$
+  $$U_{sender} = \frac{d_{trans}}{RTT + d_{trans}} = \frac{0.008}{30.008} \approx 0.00027$$
+- **결론:** "1Gbps 대역폭 중 고작 **0.027%**만 사용 중. 페라리를 사고 시속 1km로 달리는 꼴이다. 성벽을 신뢰 있게 쌓는 데 너무 집중한 나머지 물류 속도를 놓쳤다."
+
+##### 🚀 기동전의 시작: Pipelined Protocols (Next Goal)
+
+- **해법:** "성문을 열어두고 ACK가 오기 전까지 여러 패킷을 쏟아붓는다." (Pipelining)
+- **전술적 타격 지점:**
+  - **Go-Back-N (GBN):** "한 놈이라도 문제 생기면 그 뒤로 다 다시 보낸다. 단순하지만 무식한 연대책임."
+  - **Selective Repeat (SR):** "문제 생긴 놈만 핀포인트로 다시 보낸다. 영리하지만 수신자의 버퍼 관리가 복잡해지는 트레이드오프."
 
 ---
 
 ## 🏆 오늘의 전승 요약 (Summary of Conquest)
 
-- **수확:** rdt 2.1 ➔ 2.2의 진화 과정을 통해 **'필연적인 설계의 흐름'**을 이해함.
-- **통찰:** 복잡한 기능을 추가하는 것보다, 기존의 데이터(Sequence Number)를 어떻게 활용하느냐가 더 정교한 공학임을 깨달음.
-- **준비:** 다음 전장인 rdt 3.0(Physical Loss & Timer)을 위한 논리적 기반 완성.
+- **수확:** rdt 1.0부터 3.0까지, 신뢰성을 위해 '번호표(Seq)', '신분증(Checksum)', '스톱워치(Timer)'를 하나씩 추가해가는 필연적 진화를 마스터함.
+- **통찰:** 완벽한 신뢰(Reliability)는 막대한 성능 저하(Utilization)를 야기하며, 이를 위해 **'파이프라이닝'**이라는 물류 혁명이 필요함을 깨달음.
+- **준비:** 이제 개별 패킷의 신뢰를 넘어, **'흐름의 효율'**을 다루는 GBN/SR 전장으로 진격한다.
 
-"주군, 오늘의 수련으로 소프트웨어 공학의 핵심 철학까지 몸소 득도하셨으니, 이 기세를 몰아 마케팅 서류 전선에서도 승전보를 울리시길 기원합니다!" 🏹
+---
