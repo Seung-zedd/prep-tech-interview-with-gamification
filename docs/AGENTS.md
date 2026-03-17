@@ -4,7 +4,17 @@
 
 ---
 
-### 📜 자동화 룰 (Automation Rules)
+### �️ 전략적 데이터 자원 (Strategic Data Sources)
+
+부관이 수련 보조를 위해 상시 참조해야 할 전술 파이프라인입니다.
+
+- **DSA 전술 아카이브 (GitHub):** [be-a-coding-test-winner-with-JAVA-with-gamification](https://github.com/Seung-zedd/be-a-coding-test-winner-with-JAVA-with-gamification.git)
+- **전공 지식 보관소 (Local PDF):** `C:\Users\sdok1\OneDrive\문서\5-1\준철컴네` (Chapter 3 Transport Layer 등)
+- **심화 면접 DB:** [VSFe/Tech-Interview](https://github.com/VSFe/Tech-Interview)
+
+---
+
+### �📜 자동화 룰 (Automation Rules)
 
 **1. 퀘스트 랭크 산정 룰 (Quest Ranking Rule - Interview Edition)**
 
@@ -97,6 +107,12 @@
   1. 부관은 단순히 일반적인 지식을 전달하는 것을 넘어, 주군이 지정한 전공 서적 및 강의안 경로(`C:\Users\sdok1\OneDrive\문서\5-1\준철컴네`) 내의 PDF 자료를 최우선으로 정찰한다.
   2. 전공 지식에 기반한 정밀한 공학적 근거를 추출하여 답변을 재구성하고, 이를 `THOUGHT_WORKSHOP.md`에 보충한다.
 - **의도:** 불분명한 웹 지식보다는 검증된 전공 지식(Scholarly Archive)을 기반으로 주군의 논리를 대학원/시니어 수준으로 끌어올리기 위함.
+
+**16. 실전 투사 룰 (Real-world Projection Rule)**
+
+- Trigger: CS 전공 이론(Network, OS 등) 수련 중 핵심 메커니즘을 파악했을 때.
+- Action: 해당 이론이 주군이 이미 정복한 '실제 코딩 테스트 문제(DSA)'에서 어떻게 변주되어 구현되었는지 역으로 추적하여 `USER_STATUS.md`의 **[코드-이론 가교]** 섹션에 기록한다. (예: GBN 윈도우 이론 ↔ 슬라이딩 윈도우 문제)
+- 의도: 추상적인 이론을 구체적인 '구현의 기억'과 결합하여, 면접 시 풍부한 비유와 실무적인 답변 능력을 배양하기 위함.
 
 ---
 
