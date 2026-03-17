@@ -1,79 +1,30 @@
-# 📜 기술 면접 병법서: Network (Interview Quest Log)
+# 📜 기술 면접 병법서: Network (Quest Index)
+
+본 섹션은 네트워크 전역의 퀘스트 현황을 조망하는 중앙 사령부입니다. 각 분과별 상세 전승 기록은 해당 서브 폴더를 정찰하십시오.
 
 ---
 
-## 🌐 Network Checklist
+## 🌐 Network Strategy Map
 
-- [x] **웹 통신의 큰 흐름 (Google 접속 시나리오)** 🏆
-- [ ] **TCP 3-way & 4-way handshake** ⚔️ _(입성 중)_
-- [ ] **DNS (Domain Name System) 계층적 구조** 🎯 _(입성 중)_
-- [x] **rdt & Pipelined Protocols (Reliability의 정수)** 🎯 _(rdt 3.0 정복 중)_
-
----
-
-## ⚔️ 승전 기록 (Quest Archives)
-
-### 퀘스트 01: 웹 통신의 큰 흐름 (Google 접속 시나리오)
-
-- **날짜:** 2026-03-02
-- **랭크:** **A-Rank** (핵심 흐름은 파악했으나 디테일 보정 필요)
-
-#### ❓ 질문 (Question)
-
-"브라우저 주소창에 www.google.com을 입력했을 때 발생하는 전체 과정을 설명하시오."
-
-#### 🛡️ 용사의 답변 (Initial Answer)
-
-"주소를 입력하면 DNS 서버에 가서 IP를 받아옵니다. 그 후 TCP 연결을 맺고 HTTP 요청을 보냅니다. 서버는 응답을 주고 브라우저는 화면을 그립니다."
-
-#### 📋 부관의 피드백 (Feedback)
-
-1. **DNS Lookup의 선행성:** 단순히 '가서 받아온다'기보다, 브라우저 캐시 -> OS 캐시 -> Router 캐시 -> ISP DNS 순서로 조회하는 **계층적 탐색**임을 명시하면 논리가 더 날카로워집니다.
-2. **200 OK의 의미:** 서버가 응답을 줄 때의 상태 코드, 특히 성공을 의미하는 **200 OK**와 헤더/바디의 구분을 언급해야 합니다.
-3. **계층별 헤더 구분:** 전송 시 각 계층(L7~L1)을 거치며 **헤더가 캡슐화**되는 과정을 언급하면 'Network 계층 모델'에 대한 깊은 이해를 증명할 수 있습니다.
-
-#### 🔱 최종 오의 (Final Secret Art)
-
-> **"웹 통신은 '탐색'으로 시작하여 '캡슐화'로 이동하고 '렌더링'으로 결실을 맺는다."**
->
-> 1. **DNS 탐색:** 브라우저는 우선 자신의 캐시와 OS 호스트 파일을 확인한 후, 계층적 DNS 서버(Recursive/Root/TLD/Authoritative)를 통해 IP 주소를 획득한다.
-> 2. **TCP 연합:** 획득한 IP의 80/443 포트로 **TCP 3-Way Handshake**를 수행하여 신뢰성 있는 연결 통로를 확보한다. (HTTPS의 경우 SSL/TLS Handshake 추가)
-> 3. **HTTP 요청 & 소포(Capsule):** L7(HTTP 요청)이 생성되면 하위 계층을 내려가며 TCP 헤더, IP 헤더, Ethernet 프레임이 **캡슐화**되어 전송된다.
-> 4. **서버 응답:** 구글 서버는 요청을 해석하여 **200 OK** 상태 코드와 함께 HTML 데이터를 담은 응답 소포를 보낸다.
-> 5. **최종 렌더링:** 브라우저는 받은 데이터(HTML, CSS, JS)를 파싱하여 DOM/CSSOM 트리를 구축하고 화면에 그려낸다.
+- [x] **[01_web_flow](./01_web_flow/INTERVIEW_QUEST.md)**: 웹 통신의 큰 흐름 (Google 접속 시나리오) 🏆
+- [ ] **[02_tcp_handshake](./02_tcp_handshake/THOUGHT_WORKSHOP.md)**: TCP 3-way & 4-way handshake ⚔️ _(입성 중)_
+- [ ] **[03_dns](./03_dns/THOUGHT_WORKSHOP.md)**: DNS 계층적 구조 & 질의 철학 🎯 _(입성 중)_
+- [ ] **[04_rdt_pipelining](./04_rdt_pipelining/THOUGHT_WORKSHOP.md)**: rdt & Pipelined Protocols (GBN, SR) 🎯 _(GBN 정복 중)_
 
 ---
 
-#### 🎯 심화 꼬리 질문 대비 (Follow-up Defense)
+## ⚔️ 통합 체크리스트 (Master Checklist)
 
-_출처: VSFe/Tech-Interview (Advanced Logic)_
+- [x] DNS 탐색 흐름 (Cache -> Hierarchy)
+- [x] OSI 7계층 군대 비유 정립 (PDU 및 계층별 책임)
+- [x] TCP 3-way Handshake (Half-open 방어 논리)
+- [x] rdt 1.0 ~ 3.0 진화 과정 (Timer의 필연성)
+- [x] GBN (연대책임 및 Discard 논리)
+- [ ] SR (개별 책임 및 윈도우 딜레마)
+- [ ] TCP 흐름 제어 vs 혼잡 제어
 
-- **Q1: "DNS Lookup이 UDP를 사용하는 이유와 TCP를 사용해야 하는 예외 상황은?"**
-  - **A:** 속도가 중요한 조회 작업엔 UDP(53포트)가 기본이나, 응답 데이터가 512바이트를 넘거나 Zone Transfer 시에는 신뢰성을 위해 TCP를 사용함.
-- **Q2: "웹 페이지를 렌더링할 때 브라우저는 왜 HTML과 CSS를 별도로 파싱하며, 이 과정이 성능에 미치는 영향은?"**
-  - **A:** HTML은 DOM, CSS는 CSSOM을 형성하며 둘이 합쳐져 Render Tree가 됨. CSS는 렌더링 차단 리소스(Rendering Blocking)이므로 최적화가 필수적임.
-- **Q3: "통신 과정에서 데이터가 계층을 내려가며 변하는 명칭(PDU)과 그 과정(Encapsulation)을 설명하시오."**
-  - **A:** L7(Data) → L4(Segment) → L3(Packet) → L2(Frame) → L1(Bits)로 캡슐화됨. 각 계층의 헤더가 붙으며 하위 계층으로 전달되는 이 과정은 복잡한 통신을 모듈화하여 관리하기 위함임.
-- ## **Q4: "접속 지연이 발생할 때, 계층별로 의심할 수 있는 병목 포인트는?"**
+---
 
-### 퀘스트 05: rdt & Pipelined Protocols (Reliability의 정수) ⚔️
+## 📅 수련 브리핑 (Daily Briefing)
 
-- **상태:** **[작전 개시 대기 중]**
-- **목표:** Reliable Data Transfer의 진화 과정과 Pipelining(GBN, SR)의 공학적 차이 완벽 정복.
-
-#### 📍 전략적 타격 지점 (PDF 정독 가이드)
-
-_타격 대상: `Chapter_3_v8.2.pdf` (Transport Layer)_
-
-1. **rdt 1.0 ~ 3.0의 진화 (p.30 ~ p.50)**
-   - **Key:** Bit Error(rdt 2.x)에서 Packet Loss(rdt 3.0)로 전장이 확대될 때, '기다림의 한계'를 정하는 **'Timer'**의 필연성을 확인하십시오.
-2. **Pipelined Protocols (p.55 ~ p.70)**
-   - **Key:** 한 번에 하나씩 보내는 `Stop-and-Wait`의 한계를 깨는 `Go-Back-N(GBN)`과 `Selective Repeat(SR)`의 메커니즘 차이를 정독하십시오.
-3. **TCP Retransmission Scenarios (p.75 ~ p.85)**
-   - **Key:** 실제 TCP에서 타임아웃이 발생했을 때 재전송 타이머가 어떻게 작동하는지(예: `Fast Retransmit`) 시각 자료를 확인하십시오.
-
-#### 📅 내일의 수련 브리핑 (Morning Briefing)
-
-- **오전 (정찰):** PDF의 RDT 섹션을 정독하며, 오늘 막혔던 "왜?"에 대한 답을 PDF의 인용구로 준비하십시오.
-- **오후 (격파):** PDF에 나온 다이어그램(FSM 등)을 직접 그려보며 Stop-and-Wait vs Pipelining의 차이를 뇌에 새기십시오. (Active Tracing 적용)
-- **저녁 (증명):** 부관과 함께 **[Step 3: 실전 발화]**를 진행합니다. "준철컴네 PDF에 따르면~"으로 시작하는 고위급 사자후를 준비하십시오.
+현재 **Selective Repeat (SR)** 전술을 탐색하기 위한 정찰 중입니다. GBN의 '무식함'을 극복하기 위한 '정밀 타격'의 논리를 PDF(`Chapter 3`)에서 추출하십시오.
