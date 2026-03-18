@@ -98,7 +98,21 @@
 ##### 🚀 다음 전술: Selective Repeat (SR) - "정밀 타격의 시작"
 
 - **핵심:** "왜 연대책임을 져야 하는가? 잘못된 놈만 다시 쏘면 안 되나?" ➡️ 이 질문이 SR의 탄생 배경임.
-- **🚨 주의보:** SR에서는 윈도우 크기와 시퀀스 번호 범위 간의 상관관계($W \le \frac{1}{2} \times \text{SeqRange}$)가 매우 중요해진다.
+- **🚨 주의보:** SR에서는 윈도우 크기와 시퀀스 번호 범위 간의 상관관계( **W(윈도우 크기) ≤ Seq(시퀀스 번호) 범위 ÷ 2** )가 매우 중요해진다.
+
+##### 🖼️ 진화된 사고의 시각화 (GBN vs SR)
+
+![SR Note 1](../../assets/images/network/gbn_sr/SR_1.png)
+![SR Note 2](../../assets/images/network/gbn_sr/SR_2.png)
+![SR Note 3](../../assets/images/network/gbn_sr/SR_3.png)
+![SR Note 4](../../assets/images/network/gbn_sr/SR_4.png)
+
+##### ⚡ 5단계: 사고의 균열 & 교정 (GBN vs SR 윈도우 논리)
+
+- **[2026-03-18 - Sliding Window Insight]**:
+  - **GBN:** 송신자(Sender)만 슬라이딩 윈도우(크기 N)를 가진다. 수신자(Receiver)는 연대책임의 보석인 '단순함'을 택했기에 윈도우 크기가 사실상 1(`expectedseqnum`)이다. 따라서 슬라이딩의 주체는 오직 송신자뿐이다.
+  - **SR:** 송신자와 수신자 **모두 슬라이딩 윈도우(크기 N)**를 가진다! 수신자는 도착하는 개별 패킷을 버퍼링하며 자신의 `rcv_base`를 관리(슬라이딩)하고, 송신자는 개별 ACK를 마킹하며 자신의 `send_base`를 관리(슬라이딩)한다.
+  - **주의:** SR의 송신자도 당연히 윈도우를 슬라이딩시킨다. 단, 무조건 슬라이딩하는 것이 아니라 **"가장 앞단(send_base)의 패킷에 대한 ACK가 도착했을 때만"** 그 뒤로 이빨이 맞춰진(마킹된) 패킷들까지 한꺼번에 주르륵 윈도우를 전진시킨다.
 
 ---
 
