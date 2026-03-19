@@ -20,7 +20,7 @@
 
 ##### 🖼️ 사고의 시각화
 
-![TCP Byte Stream ACK Logic](../tcp_control/TCP_byte_stream_ACKs.png)
+![TCP Byte Stream ACK Logic](../../assets/images/network/tcp_control/TCP_byte_stream_ACKs.png)
 
 ##### 💎 사고의 진화 (Evolution)
 
@@ -36,8 +36,8 @@
 
 ##### 🖼️ 사고의 시각화
 
-![TCP Fast Retransmit](../tcp_control/TCP_fast_retransmit.png)
-![TCP Retransmit Scenario](../tcp_control/TCP_retransmit_scenario.png)
+![TCP Fast Retransmit](../../assets/images/network/tcp_control/TCP_fast_retransmit.png)
+![TCP Retransmit Scenario](../../assets/images/network/tcp_control/TCP_retransmit_scenario.png)
 
 ---
 
