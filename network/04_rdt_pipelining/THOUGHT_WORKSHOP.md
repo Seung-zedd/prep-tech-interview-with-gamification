@@ -138,6 +138,28 @@
 
 ---
 
+#### 🏗️ [Stage 5]: 현대 TCP의 기민함 (Fast Retransmit & Receiver Logic)
+
+##### ⚡ 사고의 균열 & 교정 (Reflection)
+
+- **균열:** "TCP는 바이트 스트림 기반인데, 어차피 데이터가 쏟아지는 건 똑같지 않나? SR식 버퍼링이 네트워크 비용을 어떻게 줄인다는 거지?"
+- **교정 (S-Rank Answer):** 핵심은 **'중복 전송의 최소화'**입니다.
+  - **GBN의 무식함:** 하나의 유실(Gap)에도 윈도우 내의 모든 패킷을 '연대책임'으로 다시 쏩니다. (비효율적 네트워크 점유)
+  - **TCP의 지능 (SR의 버퍼링 차용):** 수신자는 순서가 바뀐(Out-of-order) 패킷을 버리지 않고 보관합니다. 송신자는 딱 유실된 '그 놈'만 다시 보내면 되고, 수신자는 Gap이 메워지는 순간 **누적 ACK(Cumulative ACK)**의 원칙에 따라 이미 버퍼링 해둔 뒷번호까지 한꺼번에 포함하여 "나 여기까지 다 받았어!"라고 외칩니다.
+  - **결론:** 결국 **[수신자의 버퍼링 + 누적 ACK]**의 조합이 송신자로 하여금 이미 잘 도착한 패킷을 다시 쏘지 않게(Wait-for-nothing 방지) 함으로써 네트워크 비용을 극적으로 절감하는 것입니다.
+
+##### 🖼️ 사고의 시각화
+
+![TCP Receiver ACK Event](../../assets/images/network/gbn_sr/TCP_Receiver_ACK_event_and_action.png)
+![TCP Retransmit Scenario](../../assets/images/network/gbn_sr/TCP_retransmit_scenario.png)
+
+##### 💎 사고의 진화 (Evolution)
+
+- **[2026-03-19]**: "TCP의 단일 타이머는 GBN의 단순함을 따르지만, 실제 재전송 전략은 SR의 영리함을 택했다. 특히 **Fast Retransmit(3-Duplicate ACKs)**은 '침묵(Timeout)'을 기다리기 전에 수신자가 주는 힌트를 가로채어 유실을 확정 짓는 고도의 심리전임을 이해함."
+- **[2026-03-19 - Receiver's Cumulative ACK Insight]**: "수신자에게도 누적 ACK는 성역이다. Gap이 메워지기 전까지는 아무리 데이터를 많이 받아도 상위 앱으로 올려보낼 수(Delivery) 없다. 이 정체 현상이 결국 **`rwnd`를 압박하여 송신자의 속도를 강제로 늦추는 '흐름 제어(Flow Control)'의 물리적 트리거**가 된다는 연결 고리를 발견함."
+
+---
+
 ## 🏆 오늘의 전승 요약 (Summary of Conquest)
 
 - **수확:** rdt 1.0부터 3.0까지 신뢰성을 구축한 후, 파이프라이닝 성능 극대화를 위한 **GBN(연대 책임)과 SR(정밀 타격)의 구조적 차이점**을 완벽하게 꿰뚫음.
