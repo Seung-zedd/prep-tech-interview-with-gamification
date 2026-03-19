@@ -9,7 +9,8 @@
 - [x] **[01_web_flow](./01_web_flow/INTERVIEW_QUEST.md)**: 웹 통신의 큰 흐름 (Google 접속 시나리오) 🏆
 - [ ] **[02_tcp_handshake](./02_tcp_handshake/THOUGHT_WORKSHOP.md)**: TCP 3-way & 4-way handshake ⚔️ _(입성 중)_
 - [ ] **[03_dns](./03_dns/THOUGHT_WORKSHOP.md)**: DNS 계층적 구조 & 질의 철학 🎯 _(입성 중)_
-- [ ] **[04_rdt_pipelining](./04_rdt_pipelining/THOUGHT_WORKSHOP.md)**: rdt & Pipelined Protocols (GBN, SR) 🎯 _(GBN 정복 중)_
+- [x] **[04_rdt_pipelining](./04_rdt_pipelining/THOUGHT_WORKSHOP.md)**: rdt & Pipelined Protocols (GBN, SR) 🏆
+- [ ] **[05_tcp_control](./05_tcp_control/THOUGHT_WORKSHOP.md)**: TCP Flow & Congestion Control ⚔️ _(입성 중)_
 
 ---
 
