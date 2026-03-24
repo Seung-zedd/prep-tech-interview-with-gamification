@@ -150,8 +150,8 @@
 
 ##### 🖼️ 사고의 시각화
 
-![TCP Receiver ACK Event](../../assets/images/network/gbn_sr/TCP_Receiver_ACK_event_and_action.png)
-![TCP Retransmit Scenario](../../assets/images/network/gbn_sr/TCP_retransmit_scenario.png)
+![TCP Receiver ACK Event](../../assets/images/network/tcp_control/TCP_Receiver_ACK_event_and_action.png)
+![TCP Retransmit Scenario](../../assets/images/network/tcp_control/TCP_retransmit_scenario.png)
 
 ##### 💎 사고의 진화 (Evolution)
 
