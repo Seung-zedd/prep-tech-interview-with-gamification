@@ -14,7 +14,7 @@
 
 - [x] TCP Byte Stream ACK Logic (Next Seq Expected)
 - [x] Fast Retransmit (3-Duplicate ACKs Logic)
-- [ ] Flow Control (rwnd & window management)
+- [x] Flow Control (rwnd & window management)
 - [ ] Congestion Control (cwnd: Slow Start, Avoidance)
 - [ ] TCP Reno vs Tahoe (S-Rank Interview Topic)
 
@@ -22,4 +22,4 @@
 
 ## 📅 수련 브리핑 (Daily Briefing)
 
-현재 **Flow Control**의 정수(`rwnd`)를 정복하고, 네트워크 전체의 운명을 결정하는 **Congestion Control**의 3단계 메커니즘으로의 진입을 준비 중입니다.
+현재 **Flow Control**의 철학(OS 커널과 유저 스페이스의 속도 차이)을 완벽히 간파하고, 네트워크 전체의 운명을 결정하는 **Congestion Control**의 3단계 메커니즘으로의 진입을 준비 중입니다.

@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # 📜 기술 면접 병법서 (Interview Quest Index)
 
 이곳은 각 전장(Category)으로 진입하기 위한 관문입니다. 각 폴더별 병법서를 클릭하여 상세 퀘스트와 승전 기록을 확인하십시오.
