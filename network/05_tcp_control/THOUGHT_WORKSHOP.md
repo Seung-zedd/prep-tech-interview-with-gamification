@@ -67,8 +67,24 @@
 
 ---
 
+#### 🏗️ [Stage 3]: 혼잡 제어(Congestion Control) - 망의 보호와 3단계 메커니즘
+
+##### 🖼️ 사고의 시각화 (Flow Control vs Congestion Control)
+
+![Difference Congestion Control vs Flow Control](../../assets/images/network/tcp_control/diff_cc_fc.png)
+
+> **Insight:** 흐름 제어(Flow Control)는 수신자의 버퍼 보호(`rwnd`)가 목적이고, 혼잡 제어(Congestion Control)는 중간 라우터 버퍼의 붕괴(Network Congestion) 방지(`cwnd`)가 목적이다. 결국 TCP 송신자는 이 두 윈도우 중 **더 작고 빡빡한 기준(Min(rwnd, cwnd))**에 맞춰 데이터를 전송한다.
+
+##### 💎 사고의 진화 (Evolution)
+
+- **[2026-03-26 - Loss Event & Fast Recovery Insight]**: "에러(Loss Event)가 발생했다는 것은 현대 TCP에서 주로 '3-Duplicate ACK'를 의미한다. 수신자 버퍼에 Gap이 생겨 중복 ACK가 빗발치면, 송신자는 Fast Retransmit으로 유실된 패킷을 재전송함과 동시에 **네트워크가 혼잡해졌다고 판단**하여 Reno의 원칙에 따라 `cwnd`를 절반으로 깎아버린다 (Multiplicative Decrease). 즉, **Fast Retransmit과 Fast Recovery(절반 감소)는 하나의 세트로 움직이는 현대 TCP의 심장**이다!"
+- **[부관의 교정 (Senior Insight)]**: 현대 TCP의 Loss Event는 3-Dup ACK(가벼운 혼잡)뿐만 아니라 **Timeout(심각한 혼잡)**도 존재합니다. 3-Dup ACK는 그나마 다른 패킷들이 수신자에 도착했다는 뜻이므로 윈도우를 '절반'만 깎지만(Reno), Timeout은 아예 ACK 자체가 안 오는 것이므로 망이 완전히 멎었다고 판단하여 윈도우를 '1'로 박살 내고 Slow Start부터 다시 시작합니다(Tahoe의 흔적).
+- **[2026-03-26 - Two Independent Brakes Insight]**: "Flow Control과 Congestion Control은 부분집합이 아니라 송신자의 브레이크를 결정하는 완전히 독립적인 두 축이다. 수신자가 명시한 팩트(`rwnd`)와 헬파티 네트워크 속에서 송신자가 혼자 추론한 장부(`cwnd`) 중 더 빡빡한 기준(`Min(rwnd, cwnd)`)으로 전송량이 정해진다. 즉, ACK이 오지 않는 극단적 헬파티(Timeout)엔 1로 깎고(Tahoe), 3-Dup ACK으로 어설프게나마 살아있음을 확인(Gap)하면 절반만 깎는(Reno) 기민한 생존 방식이다."
+
+---
+
 ## 🏆 오늘의 전승 요약 (Summary of Conquest)
 
-- **수확:** TCP의 바이트 스트림 기반 ACK 구조와 Fast Retransmit의 효율성을 공학적으로 증명함.
-- **통찰:** 흐름 제어(`rwnd`)가 단순한 숫자의 전달이 아니라, 수신자 버퍼 내의 Gap 정체 현상과 물리적으로 연결되어 있음을 꿰뚫음.
-- **다음 전술:** 이제 네트워크 전체의 체증을 관리하는 **혼잡 제어(Congestion Control, `cwnd`)**의 3단계 메커니즘(Slow Start, Avoidance, Recovery)으로 진격할 준비를 마침.
+- **수확:** 흐름 제어(Flow Control)와 혼잡 제어(Congestion Control)가 송신자를 제어하는 '두 개의 독립적인 브레이크(Min(rwnd, cwnd))'임을 공학적으로 증명함.
+- **통찰:** 패킷 소실의 단서인 3-Dup ACK(절반 감소, Reno)와 Timeout(1로 박살, Tahoe) 메커니즘을 네트워크의 '혼잡도(헬파티)' 관점에서 완벽히 꿰뚫음.
+- **다음 전술:** 내일(익일) 본 전장에 복귀하여 전공 PDF의 **'Tahoe vs Reno 3단계 비교 그래프 (바닥 vs 절반)'**를 눈으로 최종 확인한 뒤, **실전 발화(Step 3) 퀘스트**로 대미를 장식하고 OS 영지로 진격한다!
