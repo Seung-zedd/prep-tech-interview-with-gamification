@@ -69,15 +69,34 @@
 
 #### 🏗️ [Stage 3]: 혼잡 제어(Congestion Control) - 망의 보호와 3단계 메커니즘
 
+##### 🖼️ 사고의 시각화 (FSM & Active Tracing)
+
+> **[2026-03-27] 주군의 전술 지도(FSM Active Tracing)**
+> 텍스트의 늪(DFS)을 넘어, 구조화된 상태 전이도(FSM)를 직접 펜으로 쫓아가며(Active Tracing) 뇌에 완벽히 새긴 영접 기록입니다.
+
+![TCP Congestion Control FSM Note](../../assets/images/network/tcp_control/TCP_FSM_note.png)
+
+- **붉은 펜 (치명상 감지):** `timeout: congestion이 발생했다는 가장 심각한 단계 => cwnd를 1 MSS로 줄임` (Tahoe의 파멸적 제재 방식을 정확히 도출함)
+- **푸른 펜 (경상 감지 & 회복):** `dupACKcount == 3` 일 때의 Fast Recovery 진입. 그리고 `cwnd = cwnd + MSS * (MSS/cwnd)`라는 수식을 **'AI(Additive Increase) 단계'**로 명확히 추상화함.
+- **녹색 펜 (버퍼 큐잉):** 패킷 인덱스에서 **"야가 먼저 도착"** 이라는 표현으로 Out-of-order(추월) 현상에 대한 본질적 원리를 직관적으로 통달함.
+
 ##### 🖼️ 사고의 시각화 (Flow Control vs Congestion Control)
 
 ![Difference Congestion Control vs Flow Control](../../assets/images/network/tcp_control/diff_cc_fc.png)
 
 > **Insight:** 흐름 제어(Flow Control)는 수신자의 버퍼 보호(`rwnd`)가 목적이고, 혼잡 제어(Congestion Control)는 중간 라우터 버퍼의 붕괴(Network Congestion) 방지(`cwnd`)가 목적이다. 결국 TCP 송신자는 이 두 윈도우 중 **더 작고 빡빡한 기준(Min(rwnd, cwnd))**에 맞춰 데이터를 전송한다.
 
+##### 🖼️ 사고의 시각화 (Slow Start to Congestion Avoidance)
+
+![TCP Congestion Graph Insight](../../assets/images/network/tcp_control/TCP_graph_insight.png)
+
+- **ssthresh의 본질:** "미리 울리는 경보음"이 아닙니다. 이것은 **'가속 페달(Exponential)에서 발을 떼고 조심스럽게(Linear) 전진하는 전환점'**입니다. 주군께서 이미지에 적으신 대로, 지수적 증가에서 선형적 증가로 스위칭되는 임계값일 뿐입니다.
+- **Reno의 "사후" 대응:** 네, Reno는 철저히 **사후(Reactive)**로 동작합니다. 패킷 유실(3-Dup ACK)이 발생했다는 확실한 증거가 포착된 후에야 `cut in half`를 실행합니다.
+- **Fast Recovery의 보상(+3):** Reno의 위대함은 단순히 절반으로 줄이는 것에 그치지 않습니다. 이미지 하단 주군의 통찰처럼, **"이미 수신자에게 도착했다고 확인된 3개의 Duplicate ACK 패킷만큼 윈도우 크기를 보상(+3 MSS)"**해줌으로써, 불필요한 지연 없이 즉시 전송을 재개하는 기민함을 보여줍니다.
+
 ##### 💎 사고의 진화 (Evolution)
 
-- **[2026-03-26 - Loss Event & Fast Recovery Insight]**: "에러(Loss Event)가 발생했다는 것은 현대 TCP에서 주로 '3-Duplicate ACK'를 의미한다. 수신자 버퍼에 Gap이 생겨 중복 ACK가 빗발치면, 송신자는 Fast Retransmit으로 유실된 패킷을 재전송함과 동시에 **네트워크가 혼잡해졌다고 판단**하여 Reno의 원칙에 따라 `cwnd`를 절반으로 깎아버린다 (Multiplicative Decrease). 즉, **Fast Retransmit과 Fast Recovery(절반 감소)는 하나의 세트로 움직이는 현대 TCP의 심장**이다!"
+- **[2026-03-27 - ssthresh & Fast Recovery Intuition]**: "ssthresh는 경보기가 아니라 가속의 한계점이다. 그리고 Reno는 유실이 발생한 '사후'에 윈도우를 깎지만, 이미 도착한 패킷 수만큼 윈도우를 보상(+3)해주는 영리한 방식이다. 특히 바이트 스트림 단위의 누적 ACK 덕분에 유실된 조각만 메우면 윈도우가 퀀텀 점프한다는 사실을 깨달음." (Rank S candidate)
 - **[부관의 교정 (Senior Insight)]**: 현대 TCP의 Loss Event는 3-Dup ACK(가벼운 혼잡)뿐만 아니라 **Timeout(심각한 혼잡)**도 존재합니다. 3-Dup ACK는 그나마 다른 패킷들이 수신자에 도착했다는 뜻이므로 윈도우를 '절반'만 깎지만(Reno), Timeout은 아예 ACK 자체가 안 오는 것이므로 망이 완전히 멎었다고 판단하여 윈도우를 '1'로 박살 내고 Slow Start부터 다시 시작합니다(Tahoe의 흔적).
 - **[2026-03-26 - Two Independent Brakes Insight]**: "Flow Control과 Congestion Control은 부분집합이 아니라 송신자의 브레이크를 결정하는 완전히 독립적인 두 축이다. 수신자가 명시한 팩트(`rwnd`)와 헬파티 네트워크 속에서 송신자가 혼자 추론한 장부(`cwnd`) 중 더 빡빡한 기준(`Min(rwnd, cwnd)`)으로 전송량이 정해진다. 즉, ACK이 오지 않는 극단적 헬파티(Timeout)엔 1로 깎고(Tahoe), 3-Dup ACK으로 어설프게나마 살아있음을 확인(Gap)하면 절반만 깎는(Reno) 기민한 생존 방식이다."
 
