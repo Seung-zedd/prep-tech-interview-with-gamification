@@ -6,7 +6,7 @@
 - [ ] **[02_tcp_handshake](../02_tcp_handshake/THOUGHT_WORKSHOP.md)**: TCP 3-way & 4-way handshake ⚔️
 - [ ] **[03_dns](../03_dns/THOUGHT_WORKSHOP.md)**: DNS 계층적 구조 & 질의 철학 🎯
 - [x] **[04_rdt_pipelining](../04_rdt_pipelining/THOUGHT_WORKSHOP.md)**: rdt & Pipelined Protocols (GBN, SR) 🏆
-- [ ] **[05_tcp_control](./THOUGHT_WORKSHOP.md)**: TCP Flow & Congestion Control ⚔️ _(입성 중)_
+- [x] **[05_tcp_control](./THOUGHT_WORKSHOP.md)**: TCP Flow & Congestion Control 🏆
 
 ---
 
@@ -15,8 +15,8 @@
 - [x] TCP Byte Stream ACK Logic (Next Seq Expected)
 - [x] Fast Retransmit (3-Duplicate ACKs Logic)
 - [x] Flow Control (rwnd & window management)
-- [ ] Congestion Control (cwnd: Slow Start, Avoidance)
-- [ ] TCP Reno vs Tahoe (S-Rank Interview Topic)
+- [x] Congestion Control (cwnd: Slow Start, Avoidance)
+- [x] TCP Reno vs Tahoe (S-Rank Interview Topic)
 
 ---
 

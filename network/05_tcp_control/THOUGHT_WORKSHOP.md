@@ -22,6 +22,12 @@
   - **L7 (Application):** DASH는 '비디오 재생 버퍼' 상태에 따라 클라이언트가 능동적으로 화질(Manifest 기반)을 고르는 것이지 TCP `rwnd`와는 무관합니다.
   - **L4 (Transport):** TCP Zero Window는 순수하게 'OS 커널의 소켓 수신 버퍼' 물리적 가용량을 다룹니다.
   - **L3 (Network):** IP의 TTL(Time To Live)은 라우팅 무한 루프를 막기 위한 라우터 홉 카운트이며, 종단 간(End-to-End) 버퍼 제어와는 완전히 독립된 세계입니다.
+    25:
+    26: ##### 🖼️ 사고의 시각화 (Socket: The Bridge between APP and Transport)
+    27:
+    28: ![TCP Connection Socket Layer](../../assets/images/network/tcp_control/tcp_connection_socket_layer.png)
+    29:
+    30: > **Insight:** `socket()` 인터페이스는 단순한 API가 아닙니다. 응용 계층(User Space)과 전송 계층(Kernel Space) 사이의 **'최종 관문'**입니다. 이 그림에서 보듯, `rcvBuffer`의 크기나 `connection state`를 관리하는 주체는 앱이 아니라 **커널 내부의 TCP 모듈**입니다. 앱은 소켓이라는 창구를 통해 데이터를 던져줄 뿐, 윈도우 사이즈를 실시간으로 깎고 늘리는 '엔진'의 동작은 전적으로 커널의 몫임을 이해하는 것이 핵심입니다.
 
 ##### 🖼️ 사고의 시각화 (Layer Boundary: DASH vs TCP Flow Control)
 
@@ -96,9 +102,25 @@
 
 ##### 💎 사고의 진화 (Evolution)
 
-- **[2026-03-27 - ssthresh & Fast Recovery Intuition]**: "ssthresh는 경보기가 아니라 가속의 한계점이다. 그리고 Reno는 유실이 발생한 '사후'에 윈도우를 깎지만, 이미 도착한 패킷 수만큼 윈도우를 보상(+3)해주는 영리한 방식이다. 특히 바이트 스트림 단위의 누적 ACK 덕분에 유실된 조각만 메우면 윈도우가 퀀텀 점프한다는 사실을 깨달음." (Rank S candidate)
-- **[부관의 교정 (Senior Insight)]**: 현대 TCP의 Loss Event는 3-Dup ACK(가벼운 혼잡)뿐만 아니라 **Timeout(심각한 혼잡)**도 존재합니다. 3-Dup ACK는 그나마 다른 패킷들이 수신자에 도착했다는 뜻이므로 윈도우를 '절반'만 깎지만(Reno), Timeout은 아예 ACK 자체가 안 오는 것이므로 망이 완전히 멎었다고 판단하여 윈도우를 '1'로 박살 내고 Slow Start부터 다시 시작합니다(Tahoe의 흔적).
-- **[2026-03-26 - Two Independent Brakes Insight]**: "Flow Control과 Congestion Control은 부분집합이 아니라 송신자의 브레이크를 결정하는 완전히 독립적인 두 축이다. 수신자가 명시한 팩트(`rwnd`)와 헬파티 네트워크 속에서 송신자가 혼자 추론한 장부(`cwnd`) 중 더 빡빡한 기준(`Min(rwnd, cwnd)`)으로 전송량이 정해진다. 즉, ACK이 오지 않는 극단적 헬파티(Timeout)엔 1로 깎고(Tahoe), 3-Dup ACK으로 어설프게나마 살아있음을 확인(Gap)하면 절반만 깎는(Reno) 기민한 생존 방식이다."
+- **[2026-03-29 - Kernel Space & Buffer Insight]**: "TCP 윈도우 조절의 주체는 앱이 아니라 OS 커널이다. 소켓은 유저 스페이스와 커널 스페이스 사이의 '주문 데스크'일 뿐이며, 실제 3-way handshake를 통해 합의된 파라미터(rcvBuffer size 등)를 관리하고 상황에 따라 `cwnd`를 동적으로 계산하는 엔진은 커널 내부에 존재한다. 실전 면접 시 이 계층적 경계를 명확히 언급하여 구현의 깊이를 증명할 것." (Rank S)
+- **[2026-03-29 - Session vs TCP Logical Unit Insight]**: "TCP Handshake(L4)는 OS 커널이 수행하는 물리적/전략적 통로 개척이며, 세션(L5)은 그 위에서 오가는 대화의 '논리적 맥락'을 관리한다. TCP 연결이 끊겨도(3G->LTE 전환 등) 다시 연결된 새로운 통로에 기존의 세션 식별자를 실어 보냄으로써 대화를 재개할 수 있는 능력이 바로 논리적 단위의 본질이다."
+- **[2026-03-29 - SaaS UUID Session Application Experience]**: "과거 SaaS 개발 시 사용했던 `UUID`가 바로 현대 TCP/IP 모델(L7-L5 통합)의 실무적 구현체임을 깨달음. 시스템 단위로 고유한 식별자(UUID)를 통해 사용자의 로그인 상태를 기억하는 것은 전적으로 응용 로직의 몫이다. 따라서 이론적 OSI 7계층보다는 실무적 TCP/IP 4계층 모델이 왜 세션과 응용을 하나로 묶는지 공학적으로 완벽히 이해함." (Rank S candidate)
+
+---
+
+#### 🎙️ 3단계: 실전 발화 (Verbatim Execution)
+
+**퀘스트: Flow Control vs Congestion Control의 차이**
+
+- **[실전 발화]**: "네, 먼저 Flow Control에 대해서 말씀드리겠습니다. Flow Control은 송신자가 수신자한테 패킷을 보낼 때, 수신자의 버퍼, 버퍼가 가득 찼을 때, 그러니까 수신자가 버퍼가 가득 차거나 버퍼 패킷을 받았는데도 버퍼 오버플로우 때문에 패킷이 유실되는 것을 방지하기 위해, 그러니까 수신자의 윈도우, 리시브 윈도우의 사이즈를 송신자한테 알려주기 위해 TCP 패킷의 헤더에 본인 수신자의 윈도우 사이즈가 얼마나 된다고 광고를 함으로써 수신자의 버퍼를 보호하기 위한 장치입니다. 반면에 Congestion Control은 송신자가 네트워크 망의 어느 혼잡도를 추론하기 위해서 자신의 송신자의 이 Congestion Window라는 또 다른 윈도우 크기를 생성합니다. 그렇게 함으로써 네트워크 망의 라우터가 제 기능을 못 하는 것을 방지하도록 하는 차원입니다. 그리고 마지막으로 송신자는 이 수신자한테 패킷을 보낼 때 수신자의 버퍼의 사이즈와 네트워크 망의 혼잡도를 계산을 하면서, 그러니까 정리하자면 리시브 윈도우 수신자의 윈도우 사이즈와 컨제스천 윈도우의 사이즈 중에 최솟값으로 설정을 함으로써 패킷을 보냅니다."
+
+- **[시니어 엔지니어의 교정 (Senior Insight)]**:
+  - **칭찬:** `rwnd`와 `cwnd`라는 두 가지 독립적인 지표를 명확히 구분하셨고, 최종적으로 `Min(rwnd, cwnd)`라는 송신자의 '결정 공식'을 정확하게 짚으셨습니다. 특히 rdt 등의 개념적 모델과 실제 TCP 헤더의 `Receive Window` 필드를 연결하여 설명하신 점이 훌륭합니다.
+  - **보완:** 혼잡 제어(Congestion Control)에서 '추론'한다는 표현이 매우 좋습니다. 여기에 한 발 더 나아가, **"TCP는 네트워크 코어로부터 명시적인 피드백을 받지 못하기 때문에(End-to-End approach), 패킷 유실(Loss event)이나 지연(Delay)을 근거로 네트워크의 혼잡 상태를 독자적으로 판단한다"**는 문장을 덧붙인다면 엔지니어링적 깊이가 더 느껴질 것입니다.
+  - **심화:** 또한, `cwnd`가 단순히 '생성'되는 것에 그치지 않고, **Slow Start(지수적 증가)**를 통해 가용 대역폭을 빠르게 탐색하고, **ssthresh(임계값)**를 만나는 순간 **Congestion Avoidance(선형적 증가)**로 전환하여 안정성을 기한다는 3단계 메커니즘(`TCP Reno`)을 언급했다면 완벽한 S-Rank였습니다.
+
+- **[최종 랭크]**: **A-Rank**
+  (핵심 로직은 완벽하나, 혼잡 제어의 세부 상태 전이(FSM)에 대한 언급을 살짝 곁들였다면 면접관을 완전히 압도했을 답변입니다.)
 
 ---
 
