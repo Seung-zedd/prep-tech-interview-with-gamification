@@ -54,6 +54,32 @@
   - **Type NS:** 도메인 ➡️ Authoritative 네임 서버 명칭 (사령부 안내).
   - **Type CNAME:** 별명 ➡️ 진짜 이름 (관리의 용이성).
   - **Type MX:** 메일 서버 정보 (특수 목적 트래픽 관리).
+
+##### 🛠️ Deep-Dive: DNS 리소스 레코드(RR)의 구조 (Name vs Value)
+
+> **"레코드의 Name과 Value가 정확히 무엇을 의미하나요?"** 에 대한 시니어의 답변
+
+DNS는 단순한 텍스트 파일이 아니라, **`RR format: (Name, Value, Type, TTL)`** 이라는 정교한 RDBMS 구조를 가진 분산 데이터베이스입니다. `Type`에 따라 `Name`과 `Value`의 정의가 달라집니다.
+
+1.  **Type A (Address):** 가장 흔한 유형
+    - **Name:** 호스트네임 (예: `ns1.foo.com`)
+    - **Value:** 해당 호스트의 **IP 주소** (예: `216.239.32.10`)
+2.  **Type NS (Name Server):** 권한의 위임
+    - **Name:** 도메인 명칭 (예: `foo.com`)
+    - **Value:** 해당 도메인의 정보를 알고 있는 **권위 있는 네임 서버의 호스트네임** (예: `ns1.foo.com`)
+3.  **Type CNAME (Canonical Name):** 별칭 관리
+    - **Name:** 별칭(Alias) 이름 (예: `www.ibm.com`)
+    - **Value:** 실제(Real) 정식 이름, 즉 **Canonical Name** (예: `servereast.backup2.ibm.com`)
+4.  **Type MX (Mail Exchange):** 메일 전용
+    - **Name:** 메일 수신 도메인 이름 (예: `hongik.ac.kr`)
+    - **Value:** 해당 메일을 처리할 **메일 서버의 호스트네임**
+
+##### 🖼️ 사고의 시각화 (DNS Record Structure)
+
+![DNS Record Structure](../../assets/images/network/dns/q01_dns_records_structure.png)
+
+> **Insight:** TLD 서버가 돌려주는 **Glue Record**는 사실 `Type NS`와 `Type A`의 조합입니다. "foo.com의 네임서버는 ns1.foo.com이야(NS)"라고 알려주면서, 동시에 "근데 ns1.foo.com의 IP는 216.239.32.10이야(A)"라고 **Value**를 함께 던져줌으로써 순환 참조를 끊고 즉시 접속하게 만드는 고도의 전술입니다.
+
 - **DNS Registrar (등록):** 새로운 도메인 등록 시 TLD에 **NS 레코드**와 **A 레코드(Glue Record)**를 쌍으로 넣어 순환 참조(Circular Reference)를 방지함.
 
 #### 🎙️ 3단계: 실전 발화 (Verbatim Execution)
