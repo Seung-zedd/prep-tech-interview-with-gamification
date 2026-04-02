@@ -27,7 +27,26 @@ TECH_TERMS = {
     "ACK": "액",
     "FIN": "핀",
     "TIME_WAIT": "타임 웨이트",
-    "handshake": "핸드쉐이크"
+    "handshake": "핸드쉐이크",
+    "PCB": "피씨비",
+    "MMU": "엠엠유",
+    "IPC": "아이피씨",
+    "Stack": "스택",
+    "Heap": "힙",
+    "Static": "스태틱",
+    "Code": "코드",
+    "OS": "오에스",
+    "CPU": "씨피유",
+    "RAM": "램",
+    "Register": "레지스터",
+    "Thread": "스레드",
+    "Process": "프로세스",
+    "Context Switching": "컨텍스트 스위칭",
+    "Deadlock": "데드락",
+    "Synchronization": "동기화",
+    "Race Condition": "레이스 컨디션",
+    "Critical Section": "크리티컬 섹션",
+    "Segmentation Fault": "세그멘테이션 폴트"
 }
 
 def preprocess_text(text):
