@@ -61,7 +61,19 @@
 
 > **Insight:** 네트워크의 한계(HOL Blocking)를 극복하기 위해 단순히 소프트웨어적 **멀티 스레드**에만 의존하지 않고, **도메인 샤딩**이라는 인프라 설계와 **멀티프로세스**라는 OS 설계를 결합하는 것이 진정한 엔지니어링의 묘미임.
 
-##### ⚡ Context Switching: '이사(Process)' vs '교대(Thread)'의 진실
+##### 🔄 프로세스 상태도(State Diagram)와 자원 대기의 본질
+
+![Process State Basic](../assets/images/os/process/q01_process_state_basic.png)
+![Process State Complex](../assets/images/os/process/q01_process_state_complex.jpg)
+
+> **"캐시 미스가 나면 프로세스는 어떻게 되나요?"** 에 대한 상태도 기반 답변
+
+1.  **Running (CPU Burst):** 프로세스가 CPU를 점유하고 연산을 질주하는 상태입니다.
+2.  **Ready/Waiting (The Queueing):** 주군이 간파하신 대로, **캐시 미스**가 발생하거나 I/O를 기다려야 하면 프로세스는 `Running` 상태를 유지할 수 없습니다.
+3.  **RAM으로의 후퇴:** CPU에서 쫓겨난 프로세스는 다시 **RAM**의 **Ready Queue**나 **Device Queue**에 줄을 서서 자기 차례를 기다려야 합니다.
+4.  **Suspended (Swap Out):** 메모리마저 부족하면 OS는 프로세스를 통째로 **디스크(Swap Area)**로 쫓아버리기도 합니다. (이미지 2의 Suspended 상태)
+
+> **Insight:** 결국 **오버헤드**란, 빛의 속도로 실행되던 `Running` 프로세스가 하드웨어적 제약(캐시 미스, 메모리 부족)으로 인해 느린 하위 계층(RAM/Disk)의 **큐에 갇히는 시간**의 합입니다.
 
 ![PCB Context Switching](../assets/images/os/process/q01_pcb_context_switching.png)
 
@@ -73,6 +85,13 @@
     - 같은 프로세스 내에서 일꾼(스레드)만 바뀝니다. **Code, Data, Heap** 영역을 공유하므로, 캐시를 싹 비울 필요 없이 자신의 작업 수첩(**Stack**)만 들고 교대하면 됩니다. '교대 근무'처럼 신속하고 가볍습니다.
 
 > **Insight:** 사이버라인 솔루션의 고성능 처리를 위해서는 효율적인 **스레드 풀(Thread Pool)** 관리가 필수적이며, 이는 곧 하드웨어의 **캐시 히트율(Cache Hit Rate)**과 직결되는 공학적 결정임을 인지하고 있습니다.
+
+> **💡 핵심 구분 (Mode Switch vs Context Switch):**
+>
+> ![Mode vs Context Switch](../assets/images/os/process/q01_mode_vs_context_switch.png)
+>
+> - **Mode Switch:** 프로세스 A가 시스템 콜을 날려 잠깐 커널 모드에 다녀오는 것. 맥락의 일부를 저장하지만, 캐시를 비울 필요가 없어 오버헤드가 작습니다. (이때는 컨텍스트 스위칭이라 부르지 않음!)
+> - **Context Switch:** 할당 시간이 다 되어 CPU를 다른 프로세스 B에게 넘겨주는 것. **캐시 미스**가 폭발하는 막대한 오버헤드가 발생합니다.
 
 ---
 
