@@ -71,8 +71,8 @@ DNS는 단순한 텍스트 파일이 아니라, **`RR format: (Name, Value, Type
     - **Name:** 별칭(Alias) 이름 (예: `www.ibm.com`)
     - **Value:** 실제(Real) 정식 이름, 즉 **Canonical Name** (예: `servereast.backup2.ibm.com`)
 4.  **Type MX (Mail Exchange):** 메일 전용
-    - **Name:** 메일 수신 도메인 이름 (예: `hongik.ac.kr`)
-    - **Value:** 해당 메일을 처리할 **메일 서버의 호스트네임**
+    - **Name:** 메일 수신 도메인 이름 (예: `example.com`)
+    - **Value:** 해당 메일을 처리할 **메일 서버의 호스트네임** (예: `mail.example.com`)
 
 ##### 🖼️ 사고의 시각화 (DNS Record Structure)
 
