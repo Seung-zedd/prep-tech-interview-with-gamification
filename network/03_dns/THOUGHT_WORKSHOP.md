@@ -78,9 +78,21 @@ DNS는 단순한 텍스트 파일이 아니라, **`RR format: (Name, Value, Type
 
 ![DNS Record Structure](../../assets/images/network/dns/q01_dns_records_structure.png)
 
-> **Insight:** TLD 서버가 돌려주는 **Glue Record**는 사실 `Type NS`와 `Type A`의 조합입니다. "foo.com의 네임서버는 ns1.foo.com이야(NS)"라고 알려주면서, 동시에 "근데 ns1.foo.com의 IP는 216.239.32.10이야(A)"라고 **Value**를 함께 던져줌으로써 순환 참조를 끊고 즉시 접속하게 만드는 고도의 전술입니다.
+##### 🛡️ DNS 위임 전술 (Delegation Logic): 왜 NS와 A가 모두 필요한가?
 
-- **DNS Registrar (등록):** 새로운 도메인 등록 시 TLD에 **NS 레코드**와 **A 레코드(Glue Record)**를 쌍으로 넣어 순환 참조(Circular Reference)를 방지함.
+> **"IP(A 레코드)만 알면 되는데, 왜 굳이 NS 레코드를 거쳐야 하나요?"** 에 대한 최종 결론
+
+1.  **권한의 위임 (Delegation):** TLD 서버(.com)는 모든 하위 도메인(`mail`, `drive` 등)의 IP를 다 알지 못합니다. 대신 **"이 도메인의 진짜 주인(Authoritative)인 네임 서버(NS)에게 물어봐!"**라고 권장하는 것이 DNS의 핵심 철학입니다.
+2.  **임명장(NS) vs 좌표(A):**
+    - **NS 레코드:** "누가 이 도메인에 대해 최종 답변을 해줄 **권위(Authority)**가 있는가?"를 증명하는 **임명장**입니다.
+    - **A 레코드:** "그 권위 있는 서버가 **어디(IP)**에 살고 있는가?"를 알려주는 **좌표**입니다.
+3.  **Glue Record의 필연성 (순환 참조 타파):**
+    - **문제:** 만약 `google.com`의 네임서버 이름이 `ns1.google.com`이라면, 그 IP를 알기 위해 다시 `ns1.google.com`에게 물어봐야 하는 **무한 루프(Chicken-and-Egg)**에 빠집니다.
+    - **해결:** TLD가 "네임서버 이름은 `ns1.google.com`이고(**NS**), 그 녀석의 IP는 이거야(**A**)"라고 **풀(Glue)**로 붙여서 한꺼번에 던져줍니다. 그래야 비로소 무한 루프를 끊고 최종 서버를 찾아가 핸드쉐이크를 갈길 수 있습니다.
+
+**결론:** 설령 IP 주소(A)를 안다고 해도, 그 서버가 최종적으로 권위가 있다는 **임명장(NS)**이 수반되어야만 DNS 질의가 완성됩니다. 즉, **A 레코드는 '물리적 도달'을, NS 레코드는 '논리적 권위'를 보장합니다.**
+
+---
 
 #### 🎙️ 3단계: 실전 발화 (Verbatim Execution)
 
