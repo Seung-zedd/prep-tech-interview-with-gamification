@@ -22,12 +22,12 @@
   - **L7 (Application):** DASH는 '비디오 재생 버퍼' 상태에 따라 클라이언트가 능동적으로 화질(Manifest 기반)을 고르는 것이지 TCP `rwnd`와는 무관합니다.
   - **L4 (Transport):** TCP Zero Window는 순수하게 'OS 커널의 소켓 수신 버퍼' 물리적 가용량을 다룹니다.
   - **L3 (Network):** IP의 TTL(Time To Live)은 라우팅 무한 루프를 막기 위한 라우터 홉 카운트이며, 종단 간(End-to-End) 버퍼 제어와는 완전히 독립된 세계입니다.
-    25:
-    26: ##### 🖼️ 사고의 시각화 (Socket: The Bridge between APP and Transport)
-    27:
-    28: ![TCP Connection Socket Layer](../../assets/images/network/tcp_control/tcp_connection_socket_layer.png)
-    29:
-    30: > **Insight:** `socket()` 인터페이스는 단순한 API가 아닙니다. 응용 계층(User Space)과 전송 계층(Kernel Space) 사이의 **'최종 관문'**입니다. 이 그림에서 보듯, `rcvBuffer`의 크기나 `connection state`를 관리하는 주체는 앱이 아니라 **커널 내부의 TCP 모듈**입니다. 앱은 소켓이라는 창구를 통해 데이터를 던져줄 뿐, 윈도우 사이즈를 실시간으로 깎고 늘리는 '엔진'의 동작은 전적으로 커널의 몫임을 이해하는 것이 핵심입니다.
+
+##### 🖼️ 사고의 시각화 (Socket: The Bridge between APP and Transport)
+
+![TCP Connection Socket Layer](../../assets/images/network/tcp_control/tcp_connection_socket_layer.png)
+
+> **Insight:** `socket()` 인터페이스는 단순한 API가 아닙니다. 응용 계층(User Space)과 전송 계층(Kernel Space) 사이의 **'최종 관문'**입니다. 이 그림에서 보듯, `rcvBuffer`의 크기나 `connection state`를 관리하는 주체는 앱이 아니라 **커널 내부의 TCP 모듈**입니다. 앱은 소켓이라는 창구를 통해 데이터를 던져줄 뿐, 윈도우 사이즈를 실시간으로 깎고 늘리는 '엔진'의 동작은 전적으로 커널의 몫임을 이해하는 것이 핵심입니다.
 
 ##### 🖼️ 사고의 시각화 (Layer Boundary: DASH vs TCP Flow Control)
 
@@ -105,6 +105,17 @@
 - **[2026-03-29 - Kernel Space & Buffer Insight]**: "TCP 윈도우 조절의 주체는 앱이 아니라 OS 커널이다. 소켓은 유저 스페이스와 커널 스페이스 사이의 '주문 데스크'일 뿐이며, 실제 3-way handshake를 통해 합의된 파라미터(rcvBuffer size 등)를 관리하고 상황에 따라 `cwnd`를 동적으로 계산하는 엔진은 커널 내부에 존재한다. 실전 면접 시 이 계층적 경계를 명확히 언급하여 구현의 깊이를 증명할 것." (Rank S)
 - **[2026-03-29 - Session vs TCP Logical Unit Insight]**: "TCP Handshake(L4)는 OS 커널이 수행하는 물리적/전략적 통로 개척이며, 세션(L5)은 그 위에서 오가는 대화의 '논리적 맥락'을 관리한다. TCP 연결이 끊겨도(3G->LTE 전환 등) 다시 연결된 새로운 통로에 기존의 세션 식별자를 실어 보냄으로써 대화를 재개할 수 있는 능력이 바로 논리적 단위의 본질이다."
 - **[2026-03-29 - SaaS UUID Session Application Experience]**: "과거 SaaS 개발 시 사용했던 `UUID`가 바로 현대 TCP/IP 모델(L7-L5 통합)의 실무적 구현체임을 깨달음. 시스템 단위로 고유한 식별자(UUID)를 통해 사용자의 로그인 상태를 기억하는 것은 전적으로 응용 로직의 몫이다. 따라서 이론적 OSI 7계층보다는 실무적 TCP/IP 4계층 모델이 왜 세션과 응용을 하나로 묶는지 공학적으로 완벽히 이해함." (Rank S candidate)
+
+##### 🛠️ Deep-Dive: 응용 로직의 책임 (UUID vs WebSockets)
+
+> **"전적으로 응용 로직의 몫이라는 것이 웹소켓을 의미하나요?"** 에 대한 시니어의 답변
+
+- **결론부터 말하면:** 웹소켓은 그 책임의 **'강력한 예시'** 중 하나일 뿐, 본질은 그보다 훨씬 넓습니다.
+- **Why?**: OSI 7계층의 L5(Session)는 통신 세션의 복구, 동기화, 체크포인팅을 하위 계층에서 지원하려 했으나, 현대 인터넷은 **"세션의 정의가 앱마다 너무 다르다"**는 결론을 내렸습니다.
+- **비교 분석:**
+  1. **UUID 기반 세션 (Stateless App):** HTTP는 무상태(Stateless)입니다. 따라서 TCP 연결이 수천 번 끊겨도, 앱이 DB/Redis에 저장된 UUID를 대조하여 "아, 너 아까 그 녀석이구나!"라고 기억해내는 것. 이것이 바로 **응용 로직이 구현한 논리적 세션**입니다. (L7이 L5의 역할을 흡수함)
+  2. **WebSocket (Stateful App):** 웹소켓은 한 번 맺은 TCP 연결을 끊지 않고 유지하며 양방향 통신을 합니다. 연결 자체가 '상태'가 되므로 L5~L7이 하나로 묶인 TCP/IP 모델의 가장 직관적인 형태입니다.
+- **통찰:** "전적으로 응용 로직의 몫"이라는 표현은, 하위 전송 계층(TCP)은 단순히 바이트를 실어 나를 뿐, 그 바이트가 **'어떤 사용자의 어떤 대화 맥락'**인지는 오직 **상위 앱 코드(Spring Security, JWT Filter 등)**만이 결정하고 관리한다는 뜻입니다.
 
 ---
 
