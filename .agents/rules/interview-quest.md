@@ -10,10 +10,20 @@ trigger: always_on
 
 ## 🗺️ 대륙별 전장 (Category Folders)
 
+### ⚔️ [Advanced Prep (사전 전략 준비)](./companies/prep/00_general_strategy/THOUGHT_WORKSHOP.md)
+
+- **공통 면접 전술:** STAR 기법(인성), 두괄식 & 넘버링(기술) 발화 전략
+- **핵심 프로젝트 딥다이브:** [QBrain 좌표 및 맥락 확장 전술](./companies/prep/01_coordinate_extraction/THOUGHT_WORKSHOP.md)
+
 ### 🌐 [Network](./network/INTERVIEW_QUEST.md)
 
 - 웹 통신, OSI 7계층, TCP 핸드쉐이크 등
 - **현재 상태:** 퀘스트 01 정복 🏆
+
+### 🏢 [Cyberline](./companies/cyberline/INTERVIEW_QUEST.md)
+
+- **(주)사이버라인 실전 면접 복기 및 큐브레인 트러블슈팅**
+- **현재 상태:** 퀘스트 01 정복 🏆 [Rank A]
 
 ### 💻 [Operating System](./os/INTERVIEW_QUEST.md)
 
