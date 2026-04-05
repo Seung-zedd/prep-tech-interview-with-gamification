@@ -12,8 +12,9 @@ trigger: always_on
 
 ### ⚔️ [Advanced Prep (사전 전략 준비)](./companies/prep/00_general_strategy/THOUGHT_WORKSHOP.md)
 
-- **공통 면접 전술:** STAR 기법(인성), 두괄식 & 넘버링(기술) 발화 전략
+- **공통 면접 전술:** [STAR 기법(인성), 두괄식 & 넘버링(기술) 발화 전략](./companies/prep/00_general_strategy/THOUGHT_WORKSHOP.md)
 - **핵심 프로젝트 딥다이브:** [QBrain 좌표 및 맥락 확장 전술](./companies/prep/01_coordinate_extraction/THOUGHT_WORKSHOP.md)
+- **범용 기술 전략:** [InputStream 고갈 문제와 byte[] 메모리 버퍼링 전략](./companies/prep/02_common_technical_strategy.md)
 
 ### 🌐 [Network](./network/INTERVIEW_QUEST.md)
 
