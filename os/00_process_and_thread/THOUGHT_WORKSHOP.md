@@ -40,7 +40,7 @@
 
 ##### 🛠️ Deep-Dive: 실무적 이해 (Chrome & Multi-Process/Thread)
 
-![Chrome Multi-Process Assets](../assets/images/os/process/q01_chrome_multi_process.png)
+![Chrome Multi-Process Assets](../../assets/images/os/process/q01_chrome_multi_process.png)
 
 > **"작업 관리자의 크롬 아코디언은 무엇을 의미하나요?"** 에 대한 시판 해답
 
@@ -63,8 +63,8 @@
 
 ##### 🔄 프로세스 상태도(State Diagram)와 자원 대기의 본질
 
-![Process State Basic](../assets/images/os/process/q01_process_state_basic.png)
-![Process State Complex](../assets/images/os/process/q01_process_state_complex.jpg)
+![Process State Basic](../../assets/images/os/process/q01_process_state_basic.png)
+![Process State Complex](../../assets/images/os/process/q01_process_state_complex.jpg)
 
 > **"캐시 미스가 나면 프로세스는 어떻게 되나요?"** 에 대한 상태도 기반 답변
 
@@ -75,7 +75,7 @@
 
 > **Insight:** 결국 **오버헤드**란, 빛의 속도로 실행되던 `Running` 프로세스가 하드웨어적 제약(캐시 미스, 메모리 부족)으로 인해 느린 하위 계층(RAM/Disk)의 **큐에 갇히는 시간**의 합입니다.
 
-![PCB Context Switching](../assets/images/os/process/q01_pcb_context_switching.png)
+![PCB Context Switching](../../assets/images/os/process/q01_pcb_context_switching.png)
 
 > **"왜 프로세스 스위칭은 무겁고, 스레드 스위칭은 가벼운가요?"** 에 대한 하드웨어적 답변
 
@@ -88,7 +88,7 @@
 
 > **💡 핵심 구분 (Mode Switch vs Context Switch):**
 >
-> ![Mode vs Context Switch](../assets/images/os/process/q01_mode_vs_context_switch.png)
+> ![Mode vs Context Switch](../../assets/images/os/process/q01_mode_vs_context_switch.png)
 >
 > - **Mode Switch:** 프로세스 A가 시스템 콜을 날려 잠깐 커널 모드에 다녀오는 것. 맥락의 일부를 저장하지만, 캐시를 비울 필요가 없어 오버헤드가 작습니다. (이때는 컨텍스트 스위칭이라 부르지 않음!)
 > - **Context Switch:** 할당 시간이 다 되어 CPU를 다른 프로세스 B에게 넘겨주는 것. **캐시 미스**가 폭발하는 막대한 오버헤드가 발생합니다.
