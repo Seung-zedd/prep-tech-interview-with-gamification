@@ -18,10 +18,10 @@
 - **핵심 키워드:** PDF Range Selection, Coordinate Mapping, DOM/PDF Fragment Identifier, Metadata Persistence.
 - **수련 상태:** 미정복 🌑
 
-### [Quest 03] ⚡ 비동기 처리 & 대규모 문서 파이프라인
+### [Quest 03] 🛡️ OOM-Safe PDF Ingestion & 자원 관리 아키텍처 (v1.5.2)
 
-- **질문:** 사용자가 대량의 PDF를 업로드했을 때, 서버 부하를 방지하고 사용자에게 '즉각적인 경험'을 주기 위해 어떤 백엔드 아키텍처를 설계했나요?
-- **핵심 키워드:** Message Queue (Redis/RabbitMQ), Worker Pattern, Job Scheduling, Push Notifications (Webhook/SSE/WebSocket).
+- **질문:** 20MB 이상의 대역폭을 가진 대용량 PDF를 비동기로 처리할 때, 서버의 힙 메모리 고갈(OOM)을 방지하고 시스템 안정성을 확보한 전략은 무엇인가요?
+- **핵심 키워드:** Local Disk Spooling, On-Demand Loading (PDFBox), Resource Lifecycle (finally-cleanup), JDK 21 Toolchain, CompletableFuture exception handling.
 - **수련 상태:** 미정복 🌑
 
 ### [Quest 04] 🎨 브라우저 내장 하이라이트 & UX 구현

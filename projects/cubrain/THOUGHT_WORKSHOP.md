@@ -40,7 +40,11 @@ graph TD
 
 ### 🛡️ 보강된 논리 (Refined Logic)
 
-- (수련 진행 시 업데이트 예정)
+- **[v1.5.1] Memory Buffering (`byte[]`):** 비동기 스트림 고갈 문제를 해결하기 위해 도입했으나, 대용량 파일 시 힙 메모리 점유율이 급증하는 트레이드오프 발견.
+- **[v1.5.2] Local Disk Spooling (Current):**
+  - **Physical Offloading:** RAM 대신 Disk를 버퍼로 활용하여 OOM-Safe 환경 구축.
+  - **Deterministic Cleanup:** `finally` 블록을 통한 즉시 삭제로 디스크 유실(Leak) 방지.
+  - **JDK 21 Optimization:** `toolchain` 고정을 통해 비동기 처리의 일관성 및 안정성 확보.
 
 ---
 
