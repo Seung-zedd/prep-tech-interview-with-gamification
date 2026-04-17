@@ -18,7 +18,8 @@
   - `메모리의 사슬` (Memory Chain: **표 편집(Table Edit)**의 인덱스 기반 연결 리스트를 운영체제의 Linked List로 치환)
   - `스택의 가교` (Stack Bridge: **주식 가격(Stock Price)**의 단조 스택을 JVM 스택 프레임 및 데이터 구조의 효율성으로 연결)
   - `AI 파이프라인의 연금술사` (AI Pipeline Alchemist: **Cubrain**을 통해 RAG 기반의 정밀한 데이터 추출과 환각 방지 로직을 마스터함)
-  - `딜레마의 파괴자` (Dilemma Breaker: $W \le Seq/2$ 법칙과 32-bit Seq/16-bit Window의 설계를 통해 데이터 무결성을 수호함)
+  - `딜레마의 파괴자` (Dilemma Breaker: $W \le Seq/2$ 법칙 and 32-bit Seq/16-bit Window의 설계를 통해 데이터 무결성을 수호함)
+  - `청각적 각인술` (Auditory Imprinting: 팟캐스트 스크립트를 통해 눈이 피로한 아침에도 논리를 뇌에 영구적으로 새김) 🎙️
 
 ---
 

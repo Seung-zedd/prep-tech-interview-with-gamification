@@ -10,11 +10,12 @@
 가독성과 전문성을 높이기 위해 네트워크의 각 관문을 서브 폴더로 정밀 분할하였습니다.
 
 | 관문 (Sub-Quest)           | 핵심 기록 (Detailed Trajectory)                                         |
-| :------------------------- | :---------------------------------------------------------------------- |
-| **01. Web Flow & OSI**     | [Google 접속 시나리오 & 7계층 비유](./01_web_flow/THOUGHT_WORKSHOP.md)  |
-| **02. TCP Handshake**      | [3-Way/4-Way 및 망령 패킷 방어](./02_tcp_handshake/THOUGHT_WORKSHOP.md) |
-| **03. Domain Name System** | [DNS 계층 구조 & Glue Record 논리](./03_dns/THOUGHT_WORKSHOP.md)        |
-| **04. rdt & Pipelining**   | [rdt 진화, GBN, SR 정밀 타격](./04_rdt_pipelining/THOUGHT_WORKSHOP.md)  |
+| :------------------------- | :---------------------------------------------------------------------- | ------------------------------------------------------------ |
+| **01. Web Flow & OSI**     | [Google 접속 시나리오 & 7계층 비유](./01_web_flow/THOUGHT_WORKSHOP.md)  | [🎙️ Podcast](./podcasts/01_web_flow/PODCAST_SCRIPT.md)       |
+| **02. TCP Handshake**      | [3-Way/4-Way 및 망령 패킷 방어](./02_tcp_handshake/THOUGHT_WORKSHOP.md) | [🎙️ Podcast](./podcasts/02_tcp_handshake/PODCAST_SCRIPT.md)  |
+| **03. Domain Name System** | [DNS 계층 구조 & Glue Record 논리](./03_dns/THOUGHT_WORKSHOP.md)        | [🎙️ Podcast](./podcasts/03_dns/PODCAST_SCRIPT.md)            |
+| **04. rdt & Pipelining**   | [rdt 진화, GBN, SR 정밀 타격](./04_rdt_pipelining/THOUGHT_WORKSHOP.md)  | [🎙️ Podcast](./podcasts/04_rdt_pipelining/PODCAST_SCRIPT.md) |
+| **05. TCP Control**        | [흐름 제어 & 혼잡 제어](./05_tcp_control/THOUGHT_WORKSHOP.md)           | [🎙️ Podcast](./podcasts/05_tcp_control/PODCAST_SCRIPT.md)    |
 
 ---
 
