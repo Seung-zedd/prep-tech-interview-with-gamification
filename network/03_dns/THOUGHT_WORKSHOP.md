@@ -90,6 +90,15 @@ DNS는 단순한 텍스트 파일이 아니라, **`RR format: (Name, Value, Type
     - **문제:** 만약 `google.com`의 네임서버 이름이 `ns1.google.com`이라면, 그 IP를 알기 위해 다시 `ns1.google.com`에게 물어봐야 하는 **무한 루프(Chicken-and-Egg)**에 빠집니다.
     - **해결:** TLD가 "네임서버 이름은 `ns1.google.com`이고(**NS**), 그 녀석의 IP는 이거야(**A**)"라고 **풀(Glue)**로 붙여서 한꺼번에 던져줍니다. 그래야 비로소 무한 루프를 끊고 최종 서버를 찾아가 핸드쉐이크를 갈길 수 있습니다.
 
+##### 🔐 DNS Chaining: The Recursive Mapping Logic
+
+클라이언트가 `www.google.com`의 IP를 구하는 과정은 DNS 서버 관점에서 아래와 같은 **Key-Value의 연쇄적 치환** 과정입니다.
+
+1.  **NS Record:** `{key: domain, value: authoritative name server}`  
+    (예: `{key: google.com, value: ns1.google.com}`)
+2.  **A Record (Glue):** `{key: authoritative name server, value: IP address}`  
+    (예: `{key: ns1.google.com, value: 216.239.32.10}`)
+
 **결론:** 설령 IP 주소(A)를 안다고 해도, 그 서버가 최종적으로 권위가 있다는 **임명장(NS)**이 수반되어야만 DNS 질의가 완성됩니다. 즉, **A 레코드는 '물리적 도달'을, NS 레코드는 '논리적 권위'를 보장합니다.**
 
 ---
@@ -102,10 +111,13 @@ DNS는 단순한 텍스트 파일이 아니라, **`RR format: (Name, Value, Type
 
 - **균열:** TLD 서버가 최종 IP를 안다고 착각함.
 - **교정:** TLD는 최종 목적지가 아닌 **'다음 사령부(Authoritative)의 이름(NS)과 주소(A)'**를 알려주는 표지판 역할을 수행함을 명시 (Glue Record).
+- **균열:** "A 레코드만 있으면 Key-Value로 바로 찾을 수 있는데, 왜 굳이 NS를 거쳐야 하는가? A 레코드만으로 충분하지 않은가?"
+- **교정:** "A 레코드만으로 처리하면 TLD 서버가 모든 도메인의 최종 IP를 관리해야 하는 **중앙집중화의 모순**에 빠진다. NS 레코드는 **권한의 위임(Delegation)**을 상징하며, NS(Who)와 A(Where)의 체이닝을 통해 분산 관리와 데이터 무결성을 동시에 달성한다."
 
 #### 💎 5단계: 진화된 사고 (Evolution)
 
 - **[2026-03-08]**: "DNS는 단순한 전송을 넘어, **'권한의 위임(Delegation)'**과 **'부하의 분산'**을 통해 수십억 개의 엔티티를 관리하는 장엄한 공학적 설계물이다."
+- **[2026-04-18]**: "DNS 조회의 본질은 **'체이닝(Chaining)'**이다. TLD가 던져주는 NS(Who)와 A(Where)의 결합(Glue Record)은 분산 시스템에서 신뢰와 도달 가능성을 동시에 해결하는 정교한 설계 패턴이다."
 
 #### 🖼️ 사고의 시각화 (Military Analogy Diagram)
 
