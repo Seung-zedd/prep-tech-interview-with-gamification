@@ -6,4 +6,6 @@
 
 ## 📈 사고 진화 기록 (Evolution Log)
 
-_(아직 기록된 사고의 궤적이 없습니다.)_
+1.  **[대규모 트래픽] [JPA → Index → Redis] 성능 병목과 검색 최적화**
+    - **전술 지도:** [THOUGHT_WORKSHOP.md](./01_large_traffic_search/THOUGHT_WORKSHOP.md)
+    - **핵심 주제:** Disk I/O 방어, 커버링 인덱스의 원리, Redis 캐싱 전략 (Look Aside, Write Behind)
