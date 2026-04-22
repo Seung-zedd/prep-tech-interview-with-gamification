@@ -24,7 +24,7 @@
 > _A: 네, 해결을 위해 잠시 `byte[]`로 변환하여 메모리에 적재하는 시도를 했습니다. 하지만 이 경우 대용량 PDF가 업로드되거나 동시 사용자가 늘어날 때 **Heap 메모리 점유율이 급증하여 OOM이 발생**하는 더 큰 안정성 결함이 발견되었습니다. 결국 안정성과 성능의 트레이드오프를 고려하여, 디스크를 버퍼로 활용하고 필요한 시점에만 로드하는 현재의 구조로 리팩토링하여 메모리 효율과 동시성 문제를 모두 해결했습니다._
 >
 > **💡 시니어급 통찰 (CS Fundamental Link):**
-> 위 리팩토링 결정은 운영체제의 **가상 메모리(Virtual Memory) 관리 기법인 [Swap 영역(Swap Area)](../../os/01_virtual_memory/THOUGHT_WORKSHOP.md#🖼️-사고의-시각화-memory--storage-hierarchy)**의 원리를 애플리케이션 레이어에서 구현한 것과 같습니다. 메모리라는 한정된 자원을 효율적으로 운영하기 위해 디스크를 보조 저장소로 활용하고, **Demand Paging** 방식을 모방하여 필요한 시점에만 데이터를 로드함으로써 시스템의 안정성(Availability)을 극대화했습니다. (참조: [사고의 시각화: Memory & Storage Hierarchy](../../os/01_virtual_memory/THOUGHT_WORKSHOP.md#🖼️-사고의-시각화-memory--storage-hierarchy))\_
+> 위 리팩토링 결정은 운영체제의 **가상 메모리(Virtual Memory) 관리 기법인 [Swap 영역(Swap Area)](../../os/01_virtual_memory/THOUGHT_WORKSHOP.md#%EF%B8%8F-%EC%82%AC%EA%B3%A0%EC%9D%98-%EC%8B%9C%EA%B0%81%ED%99%94-memory--storage-hierarchy)**의 원리를 애플리케이션 레이어에서 구현한 것과 같습니다. 메모리라는 한정된 자원을 효율적으로 운영하기 위해 디스크를 보조 저장소로 활용하고, **Demand Paging** 방식을 모방하여 필요한 시점에만 데이터를 로드함으로써 시스템의 안정성(Availability)을 극대화했습니다. (참조: [사고의 시각화: Memory & Storage Hierarchy](../../os/01_virtual_memory/THOUGHT_WORKSHOP.md#%EF%B8%8F-%EC%82%AC%EA%B3%A0%EC%9D%98-%EC%8B%9C%EA%B0%81%ED%99%94-memory--storage-hierarchy))\_
 
 ---
 
